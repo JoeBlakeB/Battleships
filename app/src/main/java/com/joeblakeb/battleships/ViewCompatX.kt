@@ -1,4 +1,4 @@
-package uk.ac.bournemouth.ap.battleships
+package com.joeblakeb.battleships
 
 import android.os.Build
 import android.view.View

@@ -1,4 +1,4 @@
-package org.example.student.battleshipgame
+package com.joeblakeb.battleshipgame
 
 import uk.ac.bournemouth.ap.battleshiplib.*
 import uk.ac.bournemouth.ap.battleshiplib.test.BattleshipTest

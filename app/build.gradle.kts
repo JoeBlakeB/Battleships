@@ -7,7 +7,7 @@ android {
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "uk.ac.bournemouth.ap.battleships"
+        applicationId = "com.joeblakeb.battleships"
         minSdk = 16
         targetSdk = 33
         versionCode = 1
@@ -30,7 +30,7 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    namespace = "uk.ac.bournemouth.ap.battleships"
+    namespace = "com.joeblakeb.battleships"
 }
 
 dependencies {
