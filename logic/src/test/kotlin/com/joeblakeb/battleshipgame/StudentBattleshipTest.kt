@@ -5,17 +5,22 @@ import uk.ac.bournemouth.ap.battleshiplib.test.BattleshipTest
 import uk.ac.bournemouth.ap.lib.matrix.boolean.BooleanMatrix
 import kotlin.random.Random
 
-class StudentBattleshipTest : BattleshipTest<StudentShip>() {
+class StudentBattleshipTest : BattleshipTest<Battleship>() {
     override fun createOpponent(
         columns: Int,
         rows: Int,
-        ships: List<StudentShip>
-    ): StudentBattleshipOpponent {
-        return TODO("Create an instance of StudentBattleshipOpponent with the dimensions and ships")
+        ships: List<Battleship>
+    ): Opponent {
+        return Opponent(ships, columns, rows)
     }
 
-    override fun transformShip(sourceShip: Ship): StudentShip {
-        return TODO("create an instance of StudentShip that maps the given ship data")
+    override fun transformShip(sourceShip: Ship): Battleship {
+        return Battleship(
+            sourceShip.top,
+            sourceShip.left,
+            sourceShip.bottom,
+            sourceShip.right
+        )
     }
 
     override fun createOpponent(
@@ -23,22 +28,20 @@ class StudentBattleshipTest : BattleshipTest<StudentShip>() {
         rows: Int,
         shipSizes: IntArray,
         random: Random
-    ): StudentBattleshipOpponent {
+    ): Opponent {
         // Note that the passing of random allows for repeatable testing
-        return TODO("Create an instance of StudentBattleshipOpponent for the given game size, " +
-                "target ship sizes and random generator")
+        return Opponent.createRandomPlacement(shipSizes, columns, rows, random)
     }
 
     override fun createGrid(
         grid: BooleanMatrix,
         opponent: BattleshipOpponent
-    ): StudentBattleshipGrid {
-        // If the opponent is not a StudentBattleshipOpponent, create it based upon the passed in data
-        val studentOpponent =
-            opponent as? StudentBattleshipOpponent
-                ?: createOpponent(opponent.columns, opponent.rows, opponent.ships.map { it as? StudentShip ?: transformShip(it) })
+    ): GameBoard {
+        val opponentImplementation =
+            opponent as? Opponent
+                ?: createOpponent(opponent.columns, opponent.rows, opponent.ships.map { it as? Battleship
+                    ?: transformShip(it) })
 
-        return StudentBattleshipGrid(studentOpponent)
+        return GameBoard(opponentImplementation)
     }
 }
-
