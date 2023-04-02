@@ -11,8 +11,38 @@ class Opponent(
     override val rows: Int = DEFAULT_ROWS,
     val random: Random = Random
 ) : BattleshipOpponent {
+    init {
+        checkPlacementValid()
+    }
+
+    /**
+     * Check that a list of ship placements do not overlap
+     * and do not go off the edge off the grid.
+     */
+    private fun checkPlacementValid() {
+        var ship: Battleship
+        for (i in ships.indices) {
+            ship = ships[i]
+            require(ship.left >= 0 && ship.right < columns &&
+                    ship.top >= 0 && ship.bottom < rows
+            ) { "A ship is off the edge of the game grid" }
+
+            for (j in 0 until i) {
+                val other = ships[j]
+                require(!((
+                    ship.top in other.rowIndices || ship.bottom in other.rowIndices ||
+                    other.top in ship.rowIndices || other.bottom in ship.rowIndices
+                ) && (
+                    ship.left in other.columnIndices || ship.right in other.columnIndices ||
+                    other.left in ship.columnIndices || other.right in ship.columnIndices
+                ))) { "Some ships overlap" }
+            }
+        }
+    }
+
     override fun shipAt(column: Int, row: Int): BattleshipOpponent.ShipInfo<Battleship>? {
-        TODO("Not yet implemented")
+        val ship = ships.find { it.isAtPosition(column, row) }
+        return ship?.let { BattleshipOpponent.ShipInfo(ships.indexOf(ship), it) }
     }
 
 
