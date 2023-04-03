@@ -8,8 +8,7 @@ import kotlin.random.Random
 class Opponent(
     override val ships: List<Battleship>,
     override val columns: Int = DEFAULT_COLUMNS,
-    override val rows: Int = DEFAULT_ROWS,
-    val random: Random = Random
+    override val rows: Int = DEFAULT_ROWS
 ) : BattleshipOpponent {
     init {
         checkPlacementValid()
@@ -20,23 +19,12 @@ class Opponent(
      * and do not go off the edge off the grid.
      */
     private fun checkPlacementValid() {
-        var ship: Battleship
-        for (i in ships.indices) {
-            ship = ships[i]
-            require(ship.left >= 0 && ship.right < columns &&
-                    ship.top >= 0 && ship.bottom < rows
-            ) { "A ship is off the edge of the game grid" }
-
-            for (j in 0 until i) {
-                val other = ships[j]
-                require(!((
-                    ship.top in other.rowIndices || ship.bottom in other.rowIndices ||
-                    other.top in ship.rowIndices || other.bottom in ship.rowIndices
-                ) && (
-                    ship.left in other.columnIndices || ship.right in other.columnIndices ||
-                    other.left in ship.columnIndices || other.right in ship.columnIndices
-                ))) { "Some ships overlap" }
+        val validShips = mutableListOf<Battleship>()
+        for (ship in ships) {
+            require(ship.validateAgainstGrid(columns, rows, validShips)) {
+                "The placement of ships is invalid"
             }
+            validShips.add(ship)
         }
     }
 
@@ -45,10 +33,51 @@ class Opponent(
         return ship?.let { BattleshipOpponent.ShipInfo(ships.indexOf(ship), it) }
     }
 
+    /**
+     * Returns the string representation of the ships on a grid.
+     *
+     * from BattleshipOpponent.toMatrixString in testlib.BattleshipTest
+     * @author Paul De Vrieze
+     */
+    override fun toString(): String = "Opponent(\n" +
+        (0 until rows).joinToString("\n") { y ->
+            (0 until columns).joinToString(" ", "    ") { x ->
+                shipAt(x, y)?.index?.toString() ?: "."
+            }
+        } + "\n)"
 
     companion object {
-        fun createRandomPlacement(shipSizes: IntArray,columns: Int = DEFAULT_COLUMNS, rows: Int = DEFAULT_ROWS, random: Random = Random): Opponent {
-            TODO("Not yet implemented")
+        /**
+         * Places ships of input array length in random valid pisitions.
+         *
+         * @param shipSizes an array of ship lengths
+         * @param columns the width of the grid
+         * @param rows the height of the grid
+         * @param random for repeatability in testing
+         */
+        fun createRandomPlacement(
+            shipSizes: IntArray,
+            columns: Int = DEFAULT_COLUMNS,
+            rows: Int = DEFAULT_ROWS,
+            random: Random = Random.Default
+        ): Opponent {
+            val sizesToPlace = shipSizes.toMutableList()
+            val placedShips = mutableListOf<Battleship>()
+            while (sizesToPlace.isNotEmpty()) {
+                val size = sizesToPlace[0]
+                val column = random.nextInt(columns)
+                val row = random.nextInt(rows)
+                val direction = random.nextInt(4)
+
+                val newShip = Battleship.createFromSize(size, column, row, direction)
+
+                if (newShip.validateAgainstGrid(columns, rows, placedShips)) {
+                    sizesToPlace.removeAt(0)
+                    placedShips.add(newShip)
+                }
+            }
+
+            return Opponent(placedShips, columns, rows)
         }
     }
 }

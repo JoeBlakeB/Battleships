@@ -17,9 +17,9 @@ class StudentBattleshipTest : BattleshipTest<Battleship>() {
     override fun transformShip(sourceShip: Ship): Battleship {
         return Battleship(
             sourceShip.top,
-            sourceShip.left,
+            sourceShip.right,
             sourceShip.bottom,
-            sourceShip.right
+            sourceShip.left
         )
     }
 
