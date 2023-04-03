@@ -61,15 +61,17 @@ class Opponent(
             rows: Int = DEFAULT_ROWS,
             random: Random = Random.Default
         ): Opponent {
+            require(shipSizes.max() <= maxOf(columns, rows)) {"Grid too small"}
+
             val sizesToPlace = shipSizes.toMutableList()
             val placedShips = mutableListOf<Battleship>()
             while (sizesToPlace.isNotEmpty()) {
                 val size = sizesToPlace[0]
+                val vertical = random.nextBoolean()
                 val column = random.nextInt(columns)
                 val row = random.nextInt(rows)
-                val direction = random.nextInt(4)
 
-                val newShip = Battleship.createFromSize(size, column, row, direction)
+                val newShip = Battleship.createFromSize(size, column, row, vertical)
 
                 if (newShip.validateAgainstGrid(columns, rows, placedShips)) {
                     sizesToPlace.removeAt(0)

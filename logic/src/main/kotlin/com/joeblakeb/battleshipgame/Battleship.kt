@@ -54,24 +54,12 @@ class Battleship(
          * @param size the length of the ship
          * @param column the location of the ships stern
          * @param row the location of the ships stern
-         * @param direction the direction of the ships bow, 0-3 clockwise, 0 being north
+         * @param vertical true if the ship is vertical, false if horisontal
          */
-        fun createFromSize(size: Int, column: Int, row: Int, direction: Int): Battleship {
-            require(direction in 0..3) { "Direction is not valid (must be 0..3)" }
-
-            var top = row
-            var right = column
-            var bottom = row
-            var left = column
-
-            when (direction) {
-                0 -> top -= size - 1
-                1 -> right += size - 1
-                2 -> bottom += size - 1
-                3 -> left -= size - 1
-            }
-
-            return Battleship(top, right, bottom, left)
+        fun createFromSize(size: Int, column: Int, row: Int, vertical: Boolean): Battleship {
+            val s = intArrayOf(row, column, row, column)
+            s[if (vertical) 2 else 1] += size - 1
+            return Battleship(s[0], s[1], s[2], s[3])
         }
     }
 }
