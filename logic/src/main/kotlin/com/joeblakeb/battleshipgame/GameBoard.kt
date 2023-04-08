@@ -26,6 +26,15 @@ class GameBoard(
         return guessGrid[column, row]
     }
 
+    /**
+     * Shoot at a cell of the grid and change its value in the guess grid.
+     * If a ship is sunk, all cells for that ship are updated.
+     * Calls event listeners after use.
+     *
+     * @param column the column shot at
+     * @param row the row shot at
+     * @return the result of the shot
+     */
     override fun shootAt(column: Int, row: Int): GuessResult {
         require(column >= 0 && row >= 0 && column < columns && row < rows) {
             "Can not shoot at coordinates, they are outside of the grid"
@@ -58,6 +67,7 @@ class GameBoard(
         return result
     }
 
+    /** A list of all event listeners for this game board */
     private val gridChangeListeners = mutableListOf<BattleshipGrid.BattleshipGridListener>()
 
     override fun addOnGridChangeListener(listener: BattleshipGrid.BattleshipGridListener) {
@@ -70,6 +80,7 @@ class GameBoard(
         gridChangeListeners.remove(listener)
     }
 
+    /** Calls all event listeners for this game board */
     private fun notifyGridChangeListeners(column: Int, row: Int) {
         gridChangeListeners.forEach {
             it.onGridChanged(this, column, row)
