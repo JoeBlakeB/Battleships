@@ -4,6 +4,8 @@ plugins {
 
 dependencies {
     api(project(":lib"))
+    api("io.github.pdvrieze.matrixlib:matrixlib:1.0")
+
     testImplementation(project(":testlib"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra["kotlin_version"]}")
 

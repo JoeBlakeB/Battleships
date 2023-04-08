@@ -13,6 +13,9 @@ class Battleship(
         require(!(height > 1 && width > 1)) { "Ship is too wide" }
     }
 
+    private val hitCells: BooleanArray = BooleanArray(size)
+    val sunk: Boolean
+        get() = hitCells.all {it}
 
     /**
      * Checks if this ship is valid against a list of
@@ -41,6 +44,18 @@ class Battleship(
      */
     fun isAtPosition(column: Int, row: Int): Boolean =
         column in left..right && row in top..bottom
+
+    /**
+     * Stores the cell of the ship that was shot to know if its been sunk.
+     *
+     * @param column the column shot at
+     * @param row the row shot at
+     * @return true if the ship is now sunk
+     */
+    fun shootAt(column: Int, row: Int): Boolean {
+        hitCells[(column - left) + (row - top)] = true
+        return sunk
+    }
 
     override fun toString(): String {
         return "Battleship(top=$top, left=$left, bottom=$bottom, right=$right)"
