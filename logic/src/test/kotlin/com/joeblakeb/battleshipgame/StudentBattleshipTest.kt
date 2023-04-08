@@ -37,10 +37,8 @@ class StudentBattleshipTest : BattleshipTest<Battleship>() {
         grid: BooleanMatrix,
         opponent: BattleshipOpponent
     ): GameBoard {
-        val opponentImplementation =
-            opponent as? Opponent
-                ?: createOpponent(opponent.columns, opponent.rows, opponent.ships.map { it as? Battleship
-                    ?: transformShip(it) })
+        val opponentImplementation = createOpponent(
+            opponent.columns, opponent.rows, opponent.ships.map { transformShip(it) })
 
         return GameBoard(opponentImplementation)
     }
