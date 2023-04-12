@@ -17,7 +17,7 @@ class GameBoard(
     private val guessGrid: MutableMatrix<GuessCell> = MutableMatrix(columns, rows, GuessCell.UNSET)
 
     override val shipsSunk: BooleanArray
-        get() = opponent.ships.map { it.sunk }.toBooleanArray()
+        get() = opponent.ships.map { guessGrid[it.left, it.top] is GuessCell.SUNK }.toBooleanArray()
 
     override fun get(column: Int, row: Int): GuessCell {
         require(column >= 0 && row >= 0 && column < columns && row < rows) {
@@ -49,7 +49,12 @@ class GameBoard(
             guessGrid[column, row] = GuessCell.MISS
             result = GuessResult.MISS
         } else {
-            val sunk = shipAt.ship.shootAt(column, row)
+            guessGrid[column, row] = GuessCell.HIT(shipAt.index)
+
+            val sunk = shipAt.ship.allIndicies {
+                x, y -> guessGrid[x, y] is GuessCell.HIT
+            }
+
             if (sunk) {
                 for (x in shipAt.ship.columnIndices) {
                     for (y in shipAt.ship.rowIndices) {
@@ -58,7 +63,6 @@ class GameBoard(
                 }
                 result = GuessResult.SUNK(shipAt.index)
             } else {
-                guessGrid[column, row] = GuessCell.HIT(shipAt.index)
                 result = GuessResult.HIT(shipAt.index)
             }
         }

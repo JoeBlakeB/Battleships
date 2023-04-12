@@ -13,10 +13,6 @@ class Battleship(
         require(!(height > 1 && width > 1)) { "Ship is too wide" }
     }
 
-    private val hitCells: BooleanArray = BooleanArray(size)
-    val sunk: Boolean
-        get() = hitCells.all {it}
-
     /**
      * Checks if this ship is valid against a list of
      * already validated ships and the grid size.
@@ -46,15 +42,18 @@ class Battleship(
         column in left..right && row in top..bottom
 
     /**
-     * Stores the cell of the ship that was shot to know if its been sunk.
+     * Run a function for each cell in the ship until one returns false.
      *
-     * @param column the column shot at
-     * @param row the row shot at
-     * @return true if the ship is now sunk
+     * @param action the function to run for each cell
+     * @return true if the function returned true for all cells
      */
-    fun shootAt(column: Int, row: Int): Boolean {
-        hitCells[(column - left) + (row - top)] = true
-        return sunk
+    fun allIndicies(action: (Int, Int) -> Boolean): Boolean {
+        for (x in columnIndices) {
+            for (y in rowIndices) {
+                if (!action(x, y)) { return false }
+            }
+        }
+        return true
     }
 
     override fun toString(): String {
