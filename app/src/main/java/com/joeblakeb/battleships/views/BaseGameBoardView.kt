@@ -5,6 +5,13 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
+import com.joeblakeb.battleshipgame.Battleship
+import com.joeblakeb.battleshipgame.GameBoard
+import com.joeblakeb.battleshipgame.Opponent
+import com.joeblakeb.battleships.R
+
+val SHIP_SIZES: IntArray = intArrayOf(5,4,3,3,2)
 
 open class BaseGameBoardView : View {
     constructor(context: Context?) : super(context)
@@ -12,8 +19,23 @@ open class BaseGameBoardView : View {
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) :
             super(context, attrs, defStyleAttr)
 
-    private val columns: Int = 10
-    private val rows: Int = 10
+    private var gameBoard = GameBoard(Opponent.createRandomPlacement(SHIP_SIZES))
+
+    private val shipsToDisplay: List<Pair<Int, Battleship>>
+        get() = gameBoard.opponent.ships.mapIndexed {
+                index, ship -> Pair(index, ship)
+        }
+
+    private var drawableShips: Array<VectorDrawableCompat> = arrayOf(
+        VectorDrawableCompat.create(resources, R.drawable.ship_carrier, null)!!,    // 5
+        VectorDrawableCompat.create(resources, R.drawable.ship_battleship, null)!!, // 4
+        VectorDrawableCompat.create(resources, R.drawable.ship_submarine, null)!!,  // 3
+        VectorDrawableCompat.create(resources, R.drawable.ship_cruiser, null)!!,    // 3
+        VectorDrawableCompat.create(resources, R.drawable.ship_destroyer, null)!!,  // 2
+    )
+
+    private val columns: Int get() = gameBoard.columns
+    private val rows: Int get() = gameBoard.rows
 
     private var gridLeft: Float = 0f
     private var gridTop: Float = 0f
@@ -22,14 +44,14 @@ open class BaseGameBoardView : View {
 
     private var cellSize: Float = 0f
     private var cellSpacing: Float = 0f
-    private var cellSpacingRatio: Float = .2f
+    private var cellSpacingRatio: Float = .1f
 
     private val gridPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
         color = 0xFF000000.toInt()
     }
 
-    private val noPlayerPaint: Paint= Paint(Paint.ANTI_ALIAS_FLAG).apply {
+    private val backgroundPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
         color = 0xFFFFFFFF.toInt()
     }
@@ -50,7 +72,24 @@ open class BaseGameBoardView : View {
             for (column in 0 until columns) {
                 val cellLeft = gridLeft + cellSpacing + ((cellSize + cellSpacing) * column)
 
-                canvas?.drawRect(cellLeft, cellTop, cellLeft+cellSize, cellTop+cellSize, noPlayerPaint)
+                canvas?.drawRect(cellLeft, cellTop, cellLeft+cellSize, cellTop+cellSize, backgroundPaint)
+            }
+        }
+
+        if (canvas != null) {
+            val shipImageShortSize = cellSize * (1 - (cellSpacingRatio*2))
+            val shipImageLongSide = cellSize * (1+cellSpacingRatio)
+
+            val shipImageOffset = cellSize * (cellSpacingRatio)
+
+            for (ship in shipsToDisplay) {
+                val shipLeft = gridLeft + cellSpacing + ((cellSize + cellSpacing) * ship.second.left) + shipImageOffset
+                val shipTop = gridTop + cellSpacing + ((cellSize + cellSpacing) * ship.second.top) + shipImageOffset
+                val shipRight = shipLeft + shipImageShortSize + (shipImageLongSide * (ship.second.width - 1))
+                val shipBottom = shipTop + shipImageShortSize + (shipImageLongSide * (ship.second.height - 1))
+
+                drawableShips[ship.first].setBounds(shipLeft.toInt(), shipTop.toInt(), shipRight.toInt(), shipBottom.toInt())
+                drawableShips[ship.first].draw(canvas)
             }
         }
     }
