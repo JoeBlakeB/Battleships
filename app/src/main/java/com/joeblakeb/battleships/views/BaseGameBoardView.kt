@@ -3,6 +3,7 @@ package com.joeblakeb.battleships.views
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.graphics.drawable.RotateDrawable
 import android.util.AttributeSet
 import android.view.View
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
@@ -26,12 +27,12 @@ open class BaseGameBoardView : View {
                 index, ship -> Pair(index, ship)
         }
 
-    private var drawableShips: Array<VectorDrawableCompat> = arrayOf(
-        VectorDrawableCompat.create(resources, R.drawable.ship_carrier, null)!!,    // 5
-        VectorDrawableCompat.create(resources, R.drawable.ship_battleship, null)!!, // 4
-        VectorDrawableCompat.create(resources, R.drawable.ship_submarine, null)!!,  // 3
-        VectorDrawableCompat.create(resources, R.drawable.ship_cruiser, null)!!,    // 3
-        VectorDrawableCompat.create(resources, R.drawable.ship_destroyer, null)!!,  // 2
+    private var drawableShips: Array<RotateDrawable> = arrayOf(
+        RotateDrawable().apply { drawable = VectorDrawableCompat.create(resources, R.drawable.ship_carrier, null) },    // 5
+        RotateDrawable().apply { drawable = VectorDrawableCompat.create(resources, R.drawable.ship_battleship, null) }, // 4
+        RotateDrawable().apply { drawable = VectorDrawableCompat.create(resources, R.drawable.ship_submarine, null) },  // 3
+        RotateDrawable().apply { drawable = VectorDrawableCompat.create(resources, R.drawable.ship_cruiser, null) },    // 3
+        RotateDrawable().apply { drawable = VectorDrawableCompat.create(resources, R.drawable.ship_destroyer, null) }   // 2
     )
 
     private val columns: Int get() = gameBoard.columns
@@ -45,6 +46,10 @@ open class BaseGameBoardView : View {
     private var cellSize: Float = 0f
     private var cellSpacing: Float = 0f
     private var cellSpacingRatio: Float = .1f
+
+    private var shipImageWidth: Float = 0f
+    private var shipImageLength: Float = 0f
+    private var shipImageOffset: Float = 0f
 
     private val gridPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
@@ -77,18 +82,28 @@ open class BaseGameBoardView : View {
         }
 
         if (canvas != null) {
-            val shipImageShortSize = cellSize * (1 - (cellSpacingRatio*2))
-            val shipImageLongSide = cellSize * (1+cellSpacingRatio)
-
-            val shipImageOffset = cellSize * (cellSpacingRatio)
-
             for (ship in shipsToDisplay) {
                 val shipLeft = gridLeft + cellSpacing + ((cellSize + cellSpacing) * ship.second.left) + shipImageOffset
                 val shipTop = gridTop + cellSpacing + ((cellSize + cellSpacing) * ship.second.top) + shipImageOffset
-                val shipRight = shipLeft + shipImageShortSize + (shipImageLongSide * (ship.second.width - 1))
-                val shipBottom = shipTop + shipImageShortSize + (shipImageLongSide * (ship.second.height - 1))
+                val shipRight = shipLeft + shipImageWidth + (shipImageLength * (ship.second.width - 1))
+                val shipBottom = shipTop + shipImageWidth + (shipImageLength * (ship.second.height - 1))
 
-                drawableShips[ship.first].setBounds(shipLeft.toInt(), shipTop.toInt(), shipRight.toInt(), shipBottom.toInt())
+                var rotateAmount = 0
+                var horizontalChange = 0f
+                if (ship.second.height == 1) {
+                    rotateAmount = 1
+                    horizontalChange = (shipImageLength * (ship.second.size - 1)) / 2
+                }
+
+                drawableShips[ship.first].toDegrees = 90f * rotateAmount
+                drawableShips[ship.first].level = 10000 * rotateAmount
+                drawableShips[ship.first].setBounds(
+                    (shipLeft + horizontalChange).toInt(),
+                    (shipTop - horizontalChange).toInt(),
+                    (shipRight - horizontalChange).toInt(),
+                    (shipBottom + horizontalChange).toInt()
+                )
+
                 drawableShips[ship.first].draw(canvas)
             }
         }
@@ -107,6 +122,10 @@ open class BaseGameBoardView : View {
         gridRight = gridLeft + gridWidth
         gridTop = (h - gridHeight)/2
         gridBottom = gridTop + gridHeight
+
+        shipImageWidth = cellSize * (1 - (cellSpacingRatio*2))
+        shipImageLength = cellSize * (1+cellSpacingRatio)
+        shipImageOffset = cellSize * (cellSpacingRatio)
     }
 
 }
