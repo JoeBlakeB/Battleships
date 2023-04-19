@@ -34,7 +34,9 @@ android {
 }
 
 dependencies {
+    api(project(":lib"))
     implementation(project(":logic"))
+    api("io.github.pdvrieze.matrixlib:matrixlib:1.0")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${rootProject.extra["kotlin_version"]}")
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.0")

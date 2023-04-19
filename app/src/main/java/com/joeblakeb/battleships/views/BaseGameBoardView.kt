@@ -11,20 +11,21 @@ import com.joeblakeb.battleshipgame.Battleship
 import com.joeblakeb.battleshipgame.GameBoard
 import com.joeblakeb.battleshipgame.Opponent
 import com.joeblakeb.battleships.R
+import uk.ac.bournemouth.ap.battleshiplib.BattleshipOpponent
 
 val SHIP_SIZES: IntArray = intArrayOf(5,4,3,3,2)
 
-open class BaseGameBoardView : View {
+abstract class BaseGameBoardView : View {
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) :
             super(context, attrs, defStyleAttr)
 
-    private var gameBoard = GameBoard(Opponent.createRandomPlacement(SHIP_SIZES))
+    protected var gameBoard = GameBoard(Opponent.createRandomPlacement(SHIP_SIZES))
 
-    private val shipsToDisplay: List<Pair<Int, Battleship>>
+    private val shipsToDisplay: List<BattleshipOpponent.ShipInfo<Battleship>>
         get() = gameBoard.opponent.ships.mapIndexed {
-                index, ship -> Pair(index, ship)
+                index, ship -> BattleshipOpponent.ShipInfo(index, ship)
         }
 
     private var drawableShips: Array<RotateDrawable> = arrayOf(
@@ -83,28 +84,28 @@ open class BaseGameBoardView : View {
 
         if (canvas != null) {
             for (ship in shipsToDisplay) {
-                val shipLeft = gridLeft + cellSpacing + ((cellSize + cellSpacing) * ship.second.left) + shipImageOffset
-                val shipTop = gridTop + cellSpacing + ((cellSize + cellSpacing) * ship.second.top) + shipImageOffset
-                val shipRight = shipLeft + shipImageWidth + (shipImageLength * (ship.second.width - 1))
-                val shipBottom = shipTop + shipImageWidth + (shipImageLength * (ship.second.height - 1))
+                val shipLeft = gridLeft + cellSpacing + ((cellSize + cellSpacing) * ship.ship.left) + shipImageOffset
+                val shipTop = gridTop + cellSpacing + ((cellSize + cellSpacing) * ship.ship.top) + shipImageOffset
+                val shipRight = shipLeft + shipImageWidth + (shipImageLength * (ship.ship.width - 1))
+                val shipBottom = shipTop + shipImageWidth + (shipImageLength * (ship.ship.height - 1))
 
                 var rotateAmount = 0
                 var horizontalChange = 0f
-                if (ship.second.height == 1) {
+                if (ship.ship.height == 1) {
                     rotateAmount = 1
-                    horizontalChange = (shipImageLength * (ship.second.size - 1)) / 2
+                    horizontalChange = (shipImageLength * (ship.ship.size - 1)) / 2
                 }
 
-                drawableShips[ship.first].toDegrees = 90f * rotateAmount
-                drawableShips[ship.first].level = 10000 * rotateAmount
-                drawableShips[ship.first].setBounds(
+                drawableShips[ship.index].toDegrees = 90f * rotateAmount
+                drawableShips[ship.index].level = 10000 * rotateAmount
+                drawableShips[ship.index].setBounds(
                     (shipLeft + horizontalChange).toInt(),
                     (shipTop - horizontalChange).toInt(),
                     (shipRight - horizontalChange).toInt(),
                     (shipBottom + horizontalChange).toInt()
                 )
 
-                drawableShips[ship.first].draw(canvas)
+                drawableShips[ship.index].draw(canvas)
             }
         }
     }
@@ -128,4 +129,21 @@ open class BaseGameBoardView : View {
         shipImageOffset = cellSize * (cellSpacingRatio)
     }
 
+    /**
+     * Get the grid coordinates of a location of the view,
+     * used for knowing which ship the user presses on.
+     *
+     * @param x The x coordinate of the view
+     * @param y The y coordinate of the view
+     * @return The grid column and row, or null if outside of grid
+     */
+    protected fun gridCellAt(x: Float, y: Float): Pair<Int, Int>? {
+        if (x in gridLeft .. gridRight && y in gridTop .. gridBottom ) {
+            return Pair(
+                ((x - gridLeft - cellSpacing) / (cellSize + cellSpacing)).toInt(),
+                ((y - gridTop - cellSpacing) / (cellSize + cellSpacing)).toInt()
+            )
+        }
+        return null
+    }
 }

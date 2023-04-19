@@ -4,9 +4,9 @@ import uk.ac.bournemouth.ap.battleshiplib.Ship
 
 class Battleship(
     override val top: Int,
-    override val right: Int,
+    override val left: Int,
     override val bottom: Int,
-    override val left: Int
+    override val right: Int
 ) : Ship {
     init {
         require(height >= 1 && width >= 1) { "Ship dimensions are inverted" }
@@ -72,7 +72,7 @@ class Battleship(
          */
         fun createFromSize(size: Int, column: Int, row: Int, vertical: Boolean): Battleship {
             val s = intArrayOf(row, column, row, column)
-            s[if (vertical) 2 else 1] += size - 1
+            s[if (vertical) 2 else 3] += size - 1
             return Battleship(s[0], s[1], s[2], s[3])
         }
     }

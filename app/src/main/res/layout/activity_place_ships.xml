@@ -22,8 +22,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.joeblakeb.battleships.views.BaseGameBoardView
-        android:id="@+id/baseGameBoardView"
+    <com.joeblakeb.battleships.views.PlacementGameBoardView
+        android:id="@+id/placementGameBoardView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"

@@ -6,7 +6,7 @@ import uk.ac.bournemouth.ap.battleshiplib.BattleshipOpponent
 import kotlin.random.Random
 
 class Opponent(
-    override val ships: List<Battleship>,
+    override val ships: MutableList<Battleship>,
     override val columns: Int = DEFAULT_COLUMNS,
     override val rows: Int = DEFAULT_ROWS
 ) : BattleshipOpponent {
@@ -26,6 +26,32 @@ class Opponent(
             }
             validShips.add(ship)
         }
+    }
+
+    /**
+     * Try to move a ship to a new position and check if it can go there.
+     *
+     * @param shipIndex the index of the ship to move
+     * @param columnsToMove the number of columns to move the ship by
+     * @param rowsToMove the number of rows to move the ship by
+     * @return true if the move was successful, or false if the ship cannot go there
+     */
+    fun tryMoveShip(shipIndex: Int, columnsToMove: Int, rowsToMove: Int): Boolean {
+        val newShip = Battleship(
+            ships[shipIndex].top + rowsToMove,
+            ships[shipIndex].left + columnsToMove,
+            ships[shipIndex].bottom + rowsToMove,
+            ships[shipIndex].right + columnsToMove
+        )
+
+        val valid = newShip.validateAgainstGrid(columns, rows,
+            ships.filterIndexed{ index, _ -> index != shipIndex })
+
+        if (valid) {
+            ships[shipIndex] = newShip
+        }
+
+        return valid
     }
 
     override fun shipAt(column: Int, row: Int): BattleshipOpponent.ShipInfo<Battleship>? {
