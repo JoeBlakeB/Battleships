@@ -47,10 +47,22 @@ class PlacementGameBoardView : BaseGameBoardView {
             return true
         }
 
+        /** Tap on a ship to rotate it at the point that was clicked */
         override fun onSingleTapUp(e: MotionEvent): Boolean {
             selectedShip = null
-            // TODO tap to rotate ship
-            return super.onSingleTapUp(e)
+
+            val gridLocation = gridCellAt(e.x, e.y) ?: return true
+            val shipInfo = gameBoard.opponent.shipAt(gridLocation.first, gridLocation.second) ?: return true
+
+            if (gameBoard.opponent.tryRotateShip(
+                    shipInfo.index,
+                    gridLocation.first,
+                    gridLocation.second
+                )) {
+                invalidate()
+            }
+
+            return true
         }
     })
 

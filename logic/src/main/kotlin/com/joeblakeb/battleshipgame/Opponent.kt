@@ -37,13 +37,44 @@ class Opponent(
      * @return true if the move was successful, or false if the ship cannot go there
      */
     fun tryMoveShip(shipIndex: Int, columnsToMove: Int, rowsToMove: Int): Boolean {
-        val newShip = Battleship(
+        return tryReplaceShip(shipIndex, Battleship(
             ships[shipIndex].top + rowsToMove,
             ships[shipIndex].left + columnsToMove,
             ships[shipIndex].bottom + rowsToMove,
             ships[shipIndex].right + columnsToMove
-        )
+        ))
+    }
 
+    /**
+     * Try to rotate a ship and check if it can go there.
+     *
+     * @param shipIndex the index of the ship to move
+     * @param centerColumn tow column that is the rotations midpoint
+     * @param centerRow the row that is the rotations midpoint
+     * @return true if the move was successful, or false if the ship cannot go there
+     */
+    fun tryRotateShip(shipIndex: Int, centerColumn: Int, centerRow: Int): Boolean {
+        val ship = ships[shipIndex]
+        val topOffset = centerRow - ship.top
+        val leftOffset = centerColumn - ship.left
+
+        val top = ship.top + topOffset - leftOffset
+        val left = ship.left + leftOffset - topOffset
+
+        return tryReplaceShip(shipIndex, Battleship(
+            top, left, top + ship.width - 1, left + ship.height - 1
+        ))
+    }
+
+    /**
+     * Replace Battleship object with a new Battleship object in the
+     * ships list, but only if it is valid.
+     *
+     * @param shipIndex the index of the ship
+     * @param newShip the new ship object
+     * @return true if the ship was successfuly placed
+     */
+    private fun tryReplaceShip(shipIndex: Int, newShip: Battleship): Boolean {
         val valid = newShip.validateAgainstGrid(columns, rows,
             ships.filterIndexed{ index, _ -> index != shipIndex })
 
