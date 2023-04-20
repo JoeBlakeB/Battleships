@@ -3,9 +3,10 @@ package com.joeblakeb.battleships.views
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.graphics.drawable.RotateDrawable
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.graphics.withRotation
+import androidx.core.graphics.withTranslation
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import com.joeblakeb.battleshipgame.Battleship
 import com.joeblakeb.battleshipgame.GameBoard
@@ -28,12 +29,12 @@ abstract class BaseGameBoardView : View {
                 index, ship -> BattleshipOpponent.ShipInfo(index, ship)
         }
 
-    private var drawableShips: Array<RotateDrawable> = arrayOf(
-        RotateDrawable().apply { drawable = VectorDrawableCompat.create(resources, R.drawable.ship_carrier, null) },    // 5
-        RotateDrawable().apply { drawable = VectorDrawableCompat.create(resources, R.drawable.ship_battleship, null) }, // 4
-        RotateDrawable().apply { drawable = VectorDrawableCompat.create(resources, R.drawable.ship_submarine, null) },  // 3
-        RotateDrawable().apply { drawable = VectorDrawableCompat.create(resources, R.drawable.ship_cruiser, null) },    // 3
-        RotateDrawable().apply { drawable = VectorDrawableCompat.create(resources, R.drawable.ship_destroyer, null) }   // 2
+    private var drawableShips: Array<VectorDrawableCompat> = arrayOf(
+        VectorDrawableCompat.create(resources, R.drawable.ship_carrier, null)!!,    // 5
+        VectorDrawableCompat.create(resources, R.drawable.ship_battleship, null)!!, // 4
+        VectorDrawableCompat.create(resources, R.drawable.ship_submarine, null)!!,  // 3
+        VectorDrawableCompat.create(resources, R.drawable.ship_cruiser, null)!!,    // 3
+        VectorDrawableCompat.create(resources, R.drawable.ship_destroyer, null)!!   // 2
     )
 
     private val columns: Int get() = gameBoard.columns
@@ -67,6 +68,11 @@ abstract class BaseGameBoardView : View {
         recalculateDimensions(w, h)
     }
 
+    /**
+     * Draws a grid, then ship vectors on top according to shipsToDisplay.
+     *
+     * Ship rotation done with help from Paul De Vrieze.
+     */
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
@@ -87,25 +93,21 @@ abstract class BaseGameBoardView : View {
                 val shipLeft = gridLeft + cellSpacing + ((cellSize + cellSpacing) * ship.ship.left) + shipImageOffset
                 val shipTop = gridTop + cellSpacing + ((cellSize + cellSpacing) * ship.ship.top) + shipImageOffset
                 val shipRight = shipLeft + shipImageWidth + (shipImageLength * (ship.ship.width - 1))
-                val shipBottom = shipTop + shipImageWidth + (shipImageLength * (ship.ship.height - 1))
 
-                var rotateAmount = 0
-                var horizontalChange = 0f
+                val shipDrawable = drawableShips[ship.index]
                 if (ship.ship.height == 1) {
-                    rotateAmount = 1
-                    horizontalChange = (shipImageLength * (ship.ship.size - 1)) / 2
+                    canvas.withTranslation(shipRight, shipTop) {
+                        canvas.withRotation(90f) {
+                            shipDrawable.setBounds(0, 0, shipImageWidth.toInt(), (shipImageWidth + (shipImageLength * (ship.ship.width - 1))).toInt())
+                            shipDrawable.draw(this)
+                        }
+                    }
+                } else {
+                    canvas.withTranslation(shipLeft, shipTop) {
+                        shipDrawable.setBounds(0, 0, shipImageWidth.toInt(), (shipImageWidth + (shipImageLength * (ship.ship.height - 1))).toInt())
+                        shipDrawable.draw(this)
+                    }
                 }
-
-                drawableShips[ship.index].toDegrees = 90f * rotateAmount
-                drawableShips[ship.index].level = 10000 * rotateAmount
-                drawableShips[ship.index].setBounds(
-                    (shipLeft + horizontalChange).toInt(),
-                    (shipTop - horizontalChange).toInt(),
-                    (shipRight - horizontalChange).toInt(),
-                    (shipBottom + horizontalChange).toInt()
-                )
-
-                drawableShips[ship.index].draw(canvas)
             }
         }
     }
