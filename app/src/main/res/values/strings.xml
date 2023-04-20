@@ -3,4 +3,5 @@
     <string name="play_game_button">Play Game</string>
     <string name="confirm_ships_button">Confirm Ship Placement</string>
     <string name="place_ships_title">Place Your Ships</string>
+    <string name="place_ships_help">Drag and drop a ship to move it\nTap on a ship to rotate it</string>
 </resources>
