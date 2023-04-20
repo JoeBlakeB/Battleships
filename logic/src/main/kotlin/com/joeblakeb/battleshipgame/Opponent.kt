@@ -34,22 +34,25 @@ class Opponent(
      * @param shipIndex the index of the ship to move
      * @param columnsToMove the number of columns to move the ship by
      * @param rowsToMove the number of rows to move the ship by
+     * @param centerColumn the column that is the movements midpoint
+     * @param centerRow the row that is the movements midpoint
      * @return true if the move was successful, or false if the ship cannot go there
      */
-    fun tryMoveShip(shipIndex: Int, columnsToMove: Int, rowsToMove: Int): Boolean {
-        return tryReplaceShip(shipIndex, Battleship(
+    fun tryMoveShip(shipIndex: Int, columnsToMove: Int, rowsToMove: Int, centerColumn: Int, centerRow: Int): Boolean {
+        return tryReplaceShip(shipIndex,
             ships[shipIndex].top + rowsToMove,
             ships[shipIndex].left + columnsToMove,
             ships[shipIndex].bottom + rowsToMove,
-            ships[shipIndex].right + columnsToMove
-        ))
+            ships[shipIndex].right + columnsToMove,
+            centerColumn, centerRow
+        )
     }
 
     /**
      * Try to rotate a ship and check if it can go there.
      *
      * @param shipIndex the index of the ship to move
-     * @param centerColumn tow column that is the rotations midpoint
+     * @param centerColumn the column that is the rotations midpoint
      * @param centerRow the row that is the rotations midpoint
      * @return true if the move was successful, or false if the ship cannot go there
      */
@@ -60,29 +63,48 @@ class Opponent(
 
         val top = ship.top + topOffset - leftOffset
         val left = ship.left + leftOffset - topOffset
+        val bottom = top + ship.width - 1
+        val right = left + ship.height - 1
 
-        return tryReplaceShip(shipIndex, Battleship(
-            top, left, top + ship.width - 1, left + ship.height - 1
-        ))
+        return tryReplaceShip(shipIndex,
+            top, left, bottom, right,
+            centerColumn, centerRow
+        )
     }
 
     /**
-     * Replace Battleship object with a new Battleship object in the
-     * ships list, but only if it is valid.
+     * Try to replace a Battleship with a new one if it is valid,
+     * also checks alternate positions for the ship to go which also
+     * include the center point (the users selected new position).
      *
      * @param shipIndex the index of the ship
-     * @param newShip the new ship object
+     * @param top of the initial ship position
+     * @param left of the initial ship position
+     * @param bottom of the initial ship position
+     * @param right of the initial ship position
+     * @param centerColumn the column that is the movements midpoint
+     * @param centerRow the row that is the movements midpoint
      * @return true if the ship was successfuly placed
      */
-    private fun tryReplaceShip(shipIndex: Int, newShip: Battleship): Boolean {
-        val valid = newShip.validateAgainstGrid(columns, rows,
-            ships.filterIndexed{ index, _ -> index != shipIndex })
-
-        if (valid) {
-            ships[shipIndex] = newShip
+    private fun tryReplaceShip(shipIndex: Int,
+                               top: Int, left: Int, bottom: Int, right: Int,
+                               centerColumn: Int, centerRow: Int): Boolean {
+        val otherShips = ships.filterIndexed{ index, _ -> index != shipIndex }
+        for (columnChange in (0 .. centerColumn - left) + (-1 downTo centerColumn - right)) {
+            for (rowChange in (0 .. centerRow - top) + (-1 downTo centerRow - bottom)) {
+                val newShip = Battleship(
+                    top + rowChange,
+                    left + columnChange,
+                    bottom + rowChange,
+                    right + columnChange
+                )
+                if (newShip.validateAgainstGrid(columns, rows, otherShips)) {
+                    ships[shipIndex] = newShip
+                    return true
+                }
+            }
         }
-
-        return valid
+        return false
     }
 
     override fun shipAt(column: Int, row: Int): BattleshipOpponent.ShipInfo<Battleship>? {

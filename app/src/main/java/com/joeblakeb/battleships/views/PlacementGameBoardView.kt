@@ -36,7 +36,8 @@ class PlacementGameBoardView : BaseGameBoardView {
                 if (gameBoard.opponent.tryMoveShip(
                     shipToMove.index,
                     newLocation.first - shipToMove.previousColumn,
-                    newLocation.second - shipToMove.previousRow
+                    newLocation.second - shipToMove.previousRow,
+                    newLocation.first, newLocation.second
                 )) {
                     selectedShip?.previousColumn = newLocation.first
                     selectedShip?.previousRow = newLocation.second
