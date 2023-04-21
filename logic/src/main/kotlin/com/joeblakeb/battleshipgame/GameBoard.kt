@@ -91,5 +91,15 @@ class GameBoard(
         }
     }
 
-    override fun toString(): String = "GameBoard($opponent)"
+    override fun toString(): String = "GameBoard($opponent, GuessGrid(\n" +
+        (0 until rows).joinToString("\n") { y ->
+            (0 until columns).joinToString(" ", "    ") { x ->
+                when(guessGrid[x, y]) {
+                    is GuessCell.MISS -> "x"
+                    is GuessCell.HIT -> "H"
+                    is GuessCell.SUNK -> "S"
+                    else -> "."
+                }
+            }
+        } + "\n))"
 }
