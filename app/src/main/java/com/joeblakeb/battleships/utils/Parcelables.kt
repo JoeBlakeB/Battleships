@@ -1,5 +1,8 @@
 package com.joeblakeb.battleships.utils
 
+import android.content.Intent
+import android.os.Build
+import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import com.joeblakeb.battleshipgame.Battleship
@@ -29,4 +32,26 @@ data class OpponentParcelable(val opponent: Opponent) : Parcelable {
             return arrayOfNulls(size)
         }
     }
+}
+
+/**
+ * Get a parcelable from an Intent, compatible with all android versions.
+ *
+ * Inline function from stack overflow.
+ * @author Niklas (2022, https://stackoverflow.com/a/73311814)
+ */
+inline fun <reified T : Parcelable> Intent.getParcelableExtraCompat(key: String): T? = when {
+    Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> getParcelableExtra(key, T::class.java)
+    else -> @Suppress("DEPRECATION") getParcelableExtra(key) as? T
+}
+
+/**
+ * Get a parcelable from a Bundle, compatible with all android versions.
+ *
+ * Inline function from stack overflow.
+ * @author Niklas (2022, https://stackoverflow.com/a/73311814)
+ */
+inline fun <reified T : Parcelable> Bundle.getParcelableCompat(key: String): T? = when {
+    Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> getParcelable(key, T::class.java)
+    else -> @Suppress("DEPRECATION") getParcelable(key) as? T
 }

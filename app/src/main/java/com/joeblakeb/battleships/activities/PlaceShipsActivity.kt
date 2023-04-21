@@ -7,6 +7,7 @@ import android.widget.Button
 import com.joeblakeb.battleships.R
 import com.joeblakeb.battleships.utils.OpponentParcelable
 import com.joeblakeb.battleships.utils.PARCELABLE_OPPONENT
+import com.joeblakeb.battleships.utils.getParcelableCompat
 import com.joeblakeb.battleships.views.PlacementGameBoardView
 
 class PlaceShipsActivity : AppCompatActivity() {
@@ -21,14 +22,26 @@ class PlaceShipsActivity : AppCompatActivity() {
         placementGameBoardView = findViewById<PlacementGameBoardView>(R.id.placementGameBoardView)
 
         confirmButton.setOnClickListener { confirmPlacement() }
+
+        if (savedInstanceState != null) {
+            placementGameBoardView.gameBoard.opponent = savedInstanceState.getParcelableCompat<OpponentParcelable>(PARCELABLE_OPPONENT)!!.opponent
+        }
     }
 
     /**
-     *
+     * Start the gameplay activity with the players ship placement.
      */
     private fun confirmPlacement() {
         val intent = Intent(this, GameplayActivity::class.java)
         intent.putExtra(PARCELABLE_OPPONENT, OpponentParcelable(placementGameBoardView.gameBoard.opponent))
         startActivity(intent)
+    }
+
+    /**
+     * Save the placement game board when the screen rotates so state is not lost.
+     */
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelable(PARCELABLE_OPPONENT, OpponentParcelable(placementGameBoardView.gameBoard.opponent))
     }
 }
