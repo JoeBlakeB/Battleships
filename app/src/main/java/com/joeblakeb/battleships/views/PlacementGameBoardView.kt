@@ -7,6 +7,11 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.core.view.GestureDetectorCompat
 
+/**
+ * The view that allows users to chose where their ships are placed,
+ * will have randomised ships by default for players who do not want
+ * to arrange ships themselves.
+ */
 class PlacementGameBoardView : BaseGameBoardView {
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)

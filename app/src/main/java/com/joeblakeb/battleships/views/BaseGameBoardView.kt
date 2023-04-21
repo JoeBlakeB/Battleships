@@ -16,13 +16,20 @@ import uk.ac.bournemouth.ap.battleshiplib.BattleshipOpponent
 
 val SHIP_SIZES: IntArray = intArrayOf(5,4,3,3,2)
 
+/**
+ * The base code for all battleship game boards which draws a grid
+ * with ships on top according to the shipsToDisplay list and
+ * TODO(shots according to the gameBoard).
+ * Also contains commonly used methods used by multiple specific
+ * game board types.
+ */
 abstract class BaseGameBoardView : View {
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) :
             super(context, attrs, defStyleAttr)
 
-    protected var gameBoard = GameBoard(Opponent.createRandomPlacement(SHIP_SIZES))
+    var gameBoard = GameBoard(Opponent.createRandomPlacement(SHIP_SIZES))
 
     private val shipsToDisplay: List<BattleshipOpponent.ShipInfo<Battleship>>
         get() = gameBoard.opponent.ships.mapIndexed {

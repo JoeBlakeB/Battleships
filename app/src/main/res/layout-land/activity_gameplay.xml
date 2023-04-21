@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".activities.GameplayActivity">
 
-    <com.joeblakeb.battleships.views.BaseGameBoardView
-        android:id="@+id/baseGameBoardViewPlayer"
+    <com.joeblakeb.battleships.views.ShootableGameBoardView
+        android:id="@+id/shootableGameBoardView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
@@ -19,12 +19,12 @@
         android:minWidth="100dp"
         android:minHeight="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/baseGameBoardViewOpponent"
+        app:layout_constraintEnd_toStartOf="@+id/attacksGameBoardView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.joeblakeb.battleships.views.BaseGameBoardView
-        android:id="@+id/baseGameBoardViewOpponent"
+    <com.joeblakeb.battleships.views.AttacksGameBoardView
+        android:id="@+id/attacksGameBoardView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
@@ -37,6 +37,6 @@
         android:minHeight="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/baseGameBoardViewPlayer"
+        app:layout_constraintStart_toEndOf="@+id/shootableGameBoardView"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

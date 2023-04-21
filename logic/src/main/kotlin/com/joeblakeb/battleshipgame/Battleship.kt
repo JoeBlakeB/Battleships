@@ -8,6 +8,8 @@ class Battleship(
     override val bottom: Int,
     override val right: Int
 ) : Ship {
+    constructor(positions: IntArray) : this(positions[0], positions[1], positions[2], positions[3])
+
     init {
         require(height >= 1 && width >= 1) { "Ship dimensions are inverted" }
         require(!(height > 1 && width > 1)) { "Ship is too wide" }
@@ -56,9 +58,12 @@ class Battleship(
         return true
     }
 
-    override fun toString(): String {
-        return "Battleship(top=$top, left=$left, bottom=$bottom, right=$right)"
-    }
+    override fun toString(): String =
+        "Battleship(top=$top, left=$left, bottom=$bottom, right=$right)"
+
+    /** Creates an int array of the ships positions. */
+    fun toIntArray(): IntArray =
+        intArrayOf(top, left, bottom, right)
 
     companion object {
         /**
