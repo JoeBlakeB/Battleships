@@ -13,6 +13,7 @@ import com.joeblakeb.battleshipgame.GameBoard
 import com.joeblakeb.battleshipgame.Opponent
 import com.joeblakeb.battleships.R
 import uk.ac.bournemouth.ap.battleshiplib.BattleshipOpponent
+import uk.ac.bournemouth.ap.lib.matrix.ext.Coordinate
 
 val SHIP_SIZES: IntArray = intArrayOf(5,4,3,3,2)
 
@@ -146,9 +147,9 @@ abstract class BaseGameBoardView : View {
      * @param y The y coordinate of the view
      * @return The grid column and row, or null if outside of grid
      */
-    protected fun gridCellAt(x: Float, y: Float): Pair<Int, Int>? {
+    protected fun gridCellAt(x: Float, y: Float): Coordinate? {
         if (x in gridLeft .. gridRight && y in gridTop .. gridBottom ) {
-            return Pair(
+            return Coordinate(
                 ((x - gridLeft - cellSpacing) / (cellSize + cellSpacing)).toInt(),
                 ((y - gridTop - cellSpacing) / (cellSize + cellSpacing)).toInt()
             )

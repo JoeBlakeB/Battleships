@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.core.view.GestureDetectorCompat
+import uk.ac.bournemouth.ap.lib.matrix.ext.Coordinate
 
 /**
  * The view that allows users to chose where their ships are placed,
@@ -24,9 +25,9 @@ class PlacementGameBoardView : BaseGameBoardView {
         GestureDetector.SimpleOnGestureListener() {
         /** Set the selected ship for drag and drop */
         override fun onDown(e: MotionEvent): Boolean {
-            selectedShip = gridCellAt(e.x, e.y)?.let {
-                gameBoard.opponent.shipAt(it.first, it.second)?.let {
-                    shipInfo -> SelectedShip(shipInfo.index, it.first, it.second)
+            selectedShip = gridCellAt(e.x, e.y)?.let { coordinate ->
+                gameBoard.opponent.shipAt(coordinate.x, coordinate.y)?.let {
+                    shipInfo -> SelectedShip(shipInfo.index, coordinate)
                 }
             }
             return true
@@ -35,17 +36,16 @@ class PlacementGameBoardView : BaseGameBoardView {
         /** Try to move the selected ship to where the user dragged it to. */
         override fun onScroll(e1: MotionEvent, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
             val shipToMove = selectedShip ?: return true
-            val newLocation = gridCellAt(e2.x, e2.y) ?: return true
+            val newCoordinate = gridCellAt(e2.x, e2.y) ?: return true
 
-            if (newLocation.first != shipToMove.previousColumn || newLocation.second != shipToMove.previousRow) {
+            if (newCoordinate != shipToMove.previousCoordinate) {
                 if (gameBoard.opponent.tryMoveShip(
                     shipToMove.index,
-                    newLocation.first - shipToMove.previousColumn,
-                    newLocation.second - shipToMove.previousRow,
-                    newLocation.first, newLocation.second
+                    newCoordinate.x - shipToMove.previousCoordinate.x,
+                    newCoordinate.y - shipToMove.previousCoordinate.y,
+                    newCoordinate.x, newCoordinate.y
                 )) {
-                    selectedShip?.previousColumn = newLocation.first
-                    selectedShip?.previousRow = newLocation.second
+                    selectedShip?.previousCoordinate = newCoordinate
                     invalidate()
                 }
             }
@@ -58,12 +58,12 @@ class PlacementGameBoardView : BaseGameBoardView {
             selectedShip = null
 
             val gridLocation = gridCellAt(e.x, e.y) ?: return true
-            val shipInfo = gameBoard.opponent.shipAt(gridLocation.first, gridLocation.second) ?: return true
+            val shipInfo = gameBoard.opponent.shipAt(gridLocation.x, gridLocation.y) ?: return true
 
             if (gameBoard.opponent.tryRotateShip(
                     shipInfo.index,
-                    gridLocation.first,
-                    gridLocation.second
+                    gridLocation.x,
+                    gridLocation.y
                 )) {
                 invalidate()
             }
@@ -79,7 +79,6 @@ class PlacementGameBoardView : BaseGameBoardView {
 
     private data class SelectedShip(
         val index: Int,
-        var previousColumn: Int,
-        var previousRow: Int
+        var previousCoordinate: Coordinate
     )
 }
