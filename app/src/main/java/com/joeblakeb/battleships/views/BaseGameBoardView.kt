@@ -13,6 +13,7 @@ import com.joeblakeb.battleshipgame.GameBoard
 import com.joeblakeb.battleshipgame.Opponent
 import com.joeblakeb.battleships.R
 import uk.ac.bournemouth.ap.battleshiplib.BattleshipOpponent
+import uk.ac.bournemouth.ap.battleshiplib.GuessCell
 import uk.ac.bournemouth.ap.lib.matrix.ext.Coordinate
 
 val SHIP_SIZES: IntArray = intArrayOf(5,4,3,3,2)
@@ -43,6 +44,11 @@ abstract class BaseGameBoardView : View {
         VectorDrawableCompat.create(resources, R.drawable.ship_submarine, null)!!,  // 3
         VectorDrawableCompat.create(resources, R.drawable.ship_cruiser, null)!!,    // 3
         VectorDrawableCompat.create(resources, R.drawable.ship_destroyer, null)!!   // 2
+    )
+
+    private var drawableGuesses: Array<VectorDrawableCompat> = arrayOf(
+        VectorDrawableCompat.create(resources, R.drawable.guess_miss, null)!!,
+        VectorDrawableCompat.create(resources, R.drawable.guess_hit, null)!!
     )
 
     private val columns: Int get() = gameBoard.columns
@@ -84,38 +90,59 @@ abstract class BaseGameBoardView : View {
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
-        canvas?.drawRect(gridLeft, gridTop, gridRight, gridBottom, gridPaint)
+        if (canvas == null) return
 
+        canvas.drawRect(gridLeft, gridTop, gridRight, gridBottom, gridPaint)
+
+        // Draw Grid
         for (row in 0 until rows) {
             val cellTop = gridTop + cellSpacing + ((cellSize + cellSpacing) * row)
 
             for (column in 0 until columns) {
                 val cellLeft = gridLeft + cellSpacing + ((cellSize + cellSpacing) * column)
 
-                canvas?.drawRect(cellLeft, cellTop, cellLeft+cellSize, cellTop+cellSize, backgroundPaint)
+                canvas.drawRect(cellLeft, cellTop, cellLeft+cellSize, cellTop+cellSize, backgroundPaint)
             }
         }
 
-        if (canvas != null) {
-            for (ship in shipsToDisplay) {
-                val shipLeft = gridLeft + cellSpacing + ((cellSize + cellSpacing) * ship.ship.left) + shipImageOffset
-                val shipTop = gridTop + cellSpacing + ((cellSize + cellSpacing) * ship.ship.top) + shipImageOffset
-                val shipRight = shipLeft + shipImageWidth + (shipImageLength * (ship.ship.width - 1))
+        // Draw Ships
+        for (ship in shipsToDisplay) {
+            val shipLeft = gridLeft + cellSpacing + ((cellSize + cellSpacing) * ship.ship.left) + shipImageOffset
+            val shipTop = gridTop + cellSpacing + ((cellSize + cellSpacing) * ship.ship.top) + shipImageOffset
+            val shipRight = shipLeft + shipImageWidth + (shipImageLength * (ship.ship.width - 1))
 
-                val shipDrawable = drawableShips[ship.index]
-                if (ship.ship.height == 1) {
-                    canvas.withTranslation(shipRight, shipTop) {
-                        canvas.withRotation(90f) {
-                            shipDrawable.setBounds(0, 0, shipImageWidth.toInt(), (shipImageWidth + (shipImageLength * (ship.ship.width - 1))).toInt())
-                            shipDrawable.draw(this)
-                        }
-                    }
-                } else {
-                    canvas.withTranslation(shipLeft, shipTop) {
-                        shipDrawable.setBounds(0, 0, shipImageWidth.toInt(), (shipImageWidth + (shipImageLength * (ship.ship.height - 1))).toInt())
+            val shipDrawable = drawableShips[ship.index]
+            if (ship.ship.height == 1) {
+                canvas.withTranslation(shipRight, shipTop) {
+                    canvas.withRotation(90f) {
+                        shipDrawable.setBounds(0, 0, shipImageWidth.toInt(), (shipImageWidth + (shipImageLength * (ship.ship.width - 1))).toInt())
                         shipDrawable.draw(this)
                     }
                 }
+            } else {
+                canvas.withTranslation(shipLeft, shipTop) {
+                    shipDrawable.setBounds(0, 0, shipImageWidth.toInt(), (shipImageWidth + (shipImageLength * (ship.ship.height - 1))).toInt())
+                    shipDrawable.draw(this)
+                }
+            }
+        }
+
+        // Draw Guess Results
+        for (row in 0 until rows) {
+            val hitTop = gridTop + cellSpacing + ((cellSize + cellSpacing) * row)
+
+            for (column in 0 until columns) {
+                val guessDrawable = drawableGuesses[when(gameBoard[column, row]) {
+                    is GuessCell.MISS -> 0
+                    is GuessCell.HIT -> 1
+                    is GuessCell.SUNK -> 1
+                    else -> continue
+                }]
+
+                val hitLeft = gridLeft + cellSpacing + ((cellSize + cellSpacing) * column)
+
+                guessDrawable.setBounds(hitLeft.toInt(), hitTop.toInt(), (hitLeft + cellSize).toInt(), (hitTop + cellSize).toInt())
+                guessDrawable.draw(canvas)
             }
         }
     }
