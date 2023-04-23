@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#e9316b</color>
-    <color name="colorPrimaryDark">#b10041</color>
-    <color name="colorAccent">#44b8af</color>
-    <color name="shipColor">#000000</color>
-    <color name="sunkColor">#800000</color>
-    <color name="background">#ffffff</color>
-    <color name="focusBackground">#B2EBF2</color>
-    <color name="hintColor">#00008f</color>
+    <color name="colorPrimary">#032d6e</color>
+    <color name="colorPrimaryAccent">#09566e</color>
+    <color name="colorSecondary">#46006e</color>
+    <color name="colorSecondaryAccent">#742682</color>
+    <color name="background">#fff</color>
 
-    <color name="secondaryLightColor">#7bebe1</color>
-    <color name="secondaryDarkColor">#008880</color>
+    <color name="mainText">#05000a</color>
+    <color name="secondaryText">#333</color>
+    <color name="buttonText">#fff</color>
+
+    <color name="gridLines">#000</color>
+    <color name="gridCell">#eee</color>
+    <color name="shipFill">#46464e</color>
+    <color name="shipLines">#000</color>
+    <color name="shipSunkTint">#77ff0000</color>
+    <color name="guessMiss">#333</color>
+    <color name="guessHit">#c82828</color>
 </resources>

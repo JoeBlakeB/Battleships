@@ -1,17 +1,18 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Battleships" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.Battleships" parent="Theme.MaterialComponents.DayNight">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryVariant">@color/colorAccent</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryAccent</item>
         <item name="colorOnPrimary">@color/colorPrimary</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/secondaryLightColor</item>
-        <item name="colorSecondaryVariant">@color/secondaryLightColor</item>
-        <item name="colorOnSecondary">@color/secondaryLightColor</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryAccent</item>
+        <item name="colorOnSecondary">@color/colorSecondary</item>
         <!-- Status bar color. -->
         <item name="windowNoTitle">true</item>
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/colorSecondary</item>
         <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@color/background</item>
     </style>
 </resources>

@@ -6,6 +6,7 @@ import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.withRotation
 import androidx.core.graphics.withTranslation
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
@@ -70,13 +71,15 @@ abstract class BaseGameBoardView : View {
 
     private val gridPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
-        color = 0xFF000000.toInt()
+        color = ContextCompat.getColor(context, R.color.gridLines)
     }
 
     private val backgroundPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
-        color = 0xFFFFFFFF.toInt()
+        color = ContextCompat.getColor(context, R.color.gridCell)
     }
+
+    private val shipSunkTint: Int = ContextCompat.getColor(context, R.color.shipSunkTint)
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
@@ -115,7 +118,7 @@ abstract class BaseGameBoardView : View {
             val shipDrawable = drawableShips[ship.index]
 
             if (gameBoard.shipsSunk[ship.index]) {
-                shipDrawable.setTint(0x77FF0000)
+                shipDrawable.setTint(shipSunkTint)
             } else {
                 shipDrawable.setTint(0)
             }
