@@ -1,9 +1,9 @@
 package com.joeblakeb.battleships.views
 
 import android.content.Context
-import android.graphics.BlendMode
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.graphics.PorterDuff
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.graphics.withRotation
@@ -40,11 +40,11 @@ abstract class BaseGameBoardView : View {
         }
 
     private var drawableShips: Array<VectorDrawableCompat> = arrayOf(
-        VectorDrawableCompat.create(resources, R.drawable.ship_carrier, null)!!.apply { setTintBlendMode(BlendMode.SRC_ATOP) },    // 5
-        VectorDrawableCompat.create(resources, R.drawable.ship_battleship, null)!!.apply { setTintBlendMode(BlendMode.SRC_ATOP) }, // 4
-        VectorDrawableCompat.create(resources, R.drawable.ship_submarine, null)!!.apply { setTintBlendMode(BlendMode.SRC_ATOP) },  // 3
-        VectorDrawableCompat.create(resources, R.drawable.ship_cruiser, null)!!.apply { setTintBlendMode(BlendMode.SRC_ATOP) },    // 3
-        VectorDrawableCompat.create(resources, R.drawable.ship_destroyer, null)!!.apply { setTintBlendMode(BlendMode.SRC_ATOP) }   // 2
+        VectorDrawableCompat.create(resources, R.drawable.ship_carrier, null)!!.apply { setTintMode(PorterDuff.Mode.SRC_ATOP) },    // 5
+        VectorDrawableCompat.create(resources, R.drawable.ship_battleship, null)!!.apply { setTintMode(PorterDuff.Mode.SRC_ATOP) }, // 4
+        VectorDrawableCompat.create(resources, R.drawable.ship_submarine, null)!!.apply { setTintMode(PorterDuff.Mode.SRC_ATOP) },  // 3
+        VectorDrawableCompat.create(resources, R.drawable.ship_cruiser, null)!!.apply { setTintMode(PorterDuff.Mode.SRC_ATOP) },    // 3
+        VectorDrawableCompat.create(resources, R.drawable.ship_destroyer, null)!!.apply { setTintMode(PorterDuff.Mode.SRC_ATOP) }   // 2
     )
 
     private var drawableGuesses: Array<VectorDrawableCompat> = arrayOf(

@@ -13,6 +13,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -38,9 +39,9 @@ dependencies {
     implementation(project(":logic"))
     api("io.github.pdvrieze.matrixlib:matrixlib:1.0")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${rootProject.extra["kotlin_version"]}")
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.6.0")
-    implementation("com.google.android.material:material:1.7.0")
+    implementation("androidx.core:core-ktx:1.10.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.8.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     testImplementation("org.junit.jupiter:junit-jupiter:${rootProject.extra["junit_version"]}")
     testImplementation("org.junit.jupiter:junit-jupiter-params:${rootProject.extra["junit_version"]}")
