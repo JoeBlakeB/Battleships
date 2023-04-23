@@ -3,6 +3,7 @@ package com.joeblakeb.battleshipgame
 import uk.ac.bournemouth.ap.battleshiplib.BattleshipGrid.Companion.DEFAULT_COLUMNS
 import uk.ac.bournemouth.ap.battleshiplib.BattleshipGrid.Companion.DEFAULT_ROWS
 import uk.ac.bournemouth.ap.battleshiplib.BattleshipOpponent
+import uk.ac.bournemouth.ap.lib.matrix.ext.Coordinate
 import kotlin.random.Random
 
 class Opponent(
@@ -111,6 +112,9 @@ class Opponent(
         val ship = ships.find { it.isAtPosition(column, row) }
         return ship?.let { BattleshipOpponent.ShipInfo(ships.indexOf(ship), it) }
     }
+
+    fun shipAt(coordinate: Coordinate): BattleshipOpponent.ShipInfo<Battleship>? =
+        shipAt(coordinate.x, coordinate.y)
 
     /**
      * Returns the string representation of the ships on a grid.

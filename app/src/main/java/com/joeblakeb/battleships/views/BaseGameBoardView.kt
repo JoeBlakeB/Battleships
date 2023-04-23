@@ -1,6 +1,7 @@
 package com.joeblakeb.battleships.views
 
 import android.content.Context
+import android.graphics.BlendMode
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.AttributeSet
@@ -21,7 +22,7 @@ val SHIP_SIZES: IntArray = intArrayOf(5,4,3,3,2)
 /**
  * The base code for all battleship game boards which draws a grid
  * with ships on top according to the shipsToDisplay list and
- * TODO(shots according to the gameBoard).
+ * shots according to the gameBoard.
  * Also contains commonly used methods used by multiple specific
  * game board types.
  */
@@ -33,17 +34,17 @@ abstract class BaseGameBoardView : View {
 
     var gameBoard = GameBoard(Opponent.createRandomPlacement(SHIP_SIZES))
 
-    private val shipsToDisplay: List<BattleshipOpponent.ShipInfo<Battleship>>
+    protected open val shipsToDisplay: List<BattleshipOpponent.ShipInfo<Battleship>>
         get() = gameBoard.opponent.ships.mapIndexed {
                 index, ship -> BattleshipOpponent.ShipInfo(index, ship)
         }
 
     private var drawableShips: Array<VectorDrawableCompat> = arrayOf(
-        VectorDrawableCompat.create(resources, R.drawable.ship_carrier, null)!!,    // 5
-        VectorDrawableCompat.create(resources, R.drawable.ship_battleship, null)!!, // 4
-        VectorDrawableCompat.create(resources, R.drawable.ship_submarine, null)!!,  // 3
-        VectorDrawableCompat.create(resources, R.drawable.ship_cruiser, null)!!,    // 3
-        VectorDrawableCompat.create(resources, R.drawable.ship_destroyer, null)!!   // 2
+        VectorDrawableCompat.create(resources, R.drawable.ship_carrier, null)!!.apply { setTintBlendMode(BlendMode.SRC_ATOP) },    // 5
+        VectorDrawableCompat.create(resources, R.drawable.ship_battleship, null)!!.apply { setTintBlendMode(BlendMode.SRC_ATOP) }, // 4
+        VectorDrawableCompat.create(resources, R.drawable.ship_submarine, null)!!.apply { setTintBlendMode(BlendMode.SRC_ATOP) },  // 3
+        VectorDrawableCompat.create(resources, R.drawable.ship_cruiser, null)!!.apply { setTintBlendMode(BlendMode.SRC_ATOP) },    // 3
+        VectorDrawableCompat.create(resources, R.drawable.ship_destroyer, null)!!.apply { setTintBlendMode(BlendMode.SRC_ATOP) }   // 2
     )
 
     private var drawableGuesses: Array<VectorDrawableCompat> = arrayOf(
@@ -112,6 +113,13 @@ abstract class BaseGameBoardView : View {
             val shipRight = shipLeft + shipImageWidth + (shipImageLength * (ship.ship.width - 1))
 
             val shipDrawable = drawableShips[ship.index]
+
+            if (gameBoard.shipsSunk[ship.index]) {
+                shipDrawable.setTint(0x77FF0000)
+            } else {
+                shipDrawable.setTint(0)
+            }
+
             if (ship.ship.height == 1) {
                 canvas.withTranslation(shipRight, shipTop) {
                     canvas.withRotation(90f) {
@@ -135,7 +143,7 @@ abstract class BaseGameBoardView : View {
                 val guessDrawable = drawableGuesses[when(gameBoard[column, row]) {
                     is GuessCell.MISS -> 0
                     is GuessCell.HIT -> 1
-                    is GuessCell.SUNK -> 1
+                    is GuessCell.SUNK -> 0
                     else -> continue
                 }]
 
