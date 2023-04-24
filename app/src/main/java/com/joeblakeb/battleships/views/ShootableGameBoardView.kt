@@ -8,7 +8,6 @@ import android.view.MotionEvent
 import androidx.core.view.GestureDetectorCompat
 import com.joeblakeb.battleshipgame.Battleship
 import com.joeblakeb.battleshipgame.GameBoard
-import com.joeblakeb.battleshipgame.Opponent
 import uk.ac.bournemouth.ap.battleshiplib.BattleshipGrid
 import uk.ac.bournemouth.ap.battleshiplib.BattleshipOpponent
 import uk.ac.bournemouth.ap.battleshiplib.GuessCell
@@ -24,12 +23,15 @@ class ShootableGameBoardView : BaseGameBoardView {
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) :
             super(context, attrs, defStyleAttr)
 
-    override var gameBoard: GameBoard = GameBoard(Opponent.createRandomPlacement(SHIP_SIZES))
+    override lateinit var gameBoard: GameBoard
+        private set
 
     private val gridChangeListener: BattleshipGrid.BattleshipGridListener =
         BattleshipGrid.BattleshipGridListener { _, _, _ -> invalidate() }
 
-    init {
+    /** Set the game board and add the event listener to it */
+    fun setGameBoard(newGameBoard: GameBoard) {
+        gameBoard = newGameBoard
         gameBoard.addOnGridChangeListener(gridChangeListener)
     }
 
