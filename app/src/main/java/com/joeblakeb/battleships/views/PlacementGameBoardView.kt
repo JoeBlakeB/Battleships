@@ -6,6 +6,8 @@ import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.core.view.GestureDetectorCompat
+import com.joeblakeb.battleshipgame.GameBoard
+import com.joeblakeb.battleshipgame.MutableOpponent
 import uk.ac.bournemouth.ap.lib.matrix.ext.Coordinate
 
 /**
@@ -18,6 +20,14 @@ class PlacementGameBoardView : BaseGameBoardView {
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) :
             super(context, attrs, defStyleAttr)
+
+    var mutableOpponent: MutableOpponent = MutableOpponent.createRandomPlacement(SHIP_SIZES)
+        set(value) {
+            field = value
+            gameBoard = GameBoard(value)
+        }
+
+    override var gameBoard: GameBoard = GameBoard(mutableOpponent)
 
     private var selectedShip: SelectedShip? = null
 
@@ -39,7 +49,7 @@ class PlacementGameBoardView : BaseGameBoardView {
             val newCoordinate = gridCellAt(e2.x, e2.y) ?: return true
 
             if (newCoordinate != shipToMove.previousCoordinate) {
-                if (gameBoard.opponent.tryMoveShip(
+                if (mutableOpponent.tryMoveShip(
                     shipToMove.index,
                     newCoordinate.x - shipToMove.previousCoordinate.x,
                     newCoordinate.y - shipToMove.previousCoordinate.y,
@@ -60,7 +70,7 @@ class PlacementGameBoardView : BaseGameBoardView {
             val gridLocation = gridCellAt(e.x, e.y) ?: return true
             val shipInfo = gameBoard.opponent.shipAt(gridLocation.x, gridLocation.y) ?: return true
 
-            if (gameBoard.opponent.tryRotateShip(
+            if (mutableOpponent.tryRotateShip(
                     shipInfo.index,
                     gridLocation.x,
                     gridLocation.y

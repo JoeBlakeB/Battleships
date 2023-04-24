@@ -5,27 +5,40 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
+import com.joeblakeb.battleshipgame.BaseOpponent
 import com.joeblakeb.battleshipgame.Battleship
-import com.joeblakeb.battleshipgame.Opponent
 
 const val PARCELABLE_OPPONENT: String = "com.joeblakeb.battleships.PlayerShipsPlacement"
 
-data class OpponentParcelable(val opponent: Opponent) : Parcelable {
+/**
+ * A subclass of BaseOpponent for creating and reading parcelables containing opponent data.
+ */
+data class OpponentParcelable(
+    override val ships: List<Battleship>,
+    override val columns: Int,
+    override val rows: Int
+) : Parcelable, BaseOpponent() {
+    constructor(opponent: BaseOpponent) : this(opponent.ships, opponent.columns, opponent.rows)
+
     override fun describeContents(): Int = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
-        for (ship in opponent.ships) {
+        dest.writeInt(columns)
+        dest.writeInt(rows)
+        for (ship in ships) {
             dest.writeIntArray(ship.toIntArray())
         }
     }
 
     companion object CREATOR : Parcelable.Creator<OpponentParcelable> {
         override fun createFromParcel(parcel: Parcel): OpponentParcelable {
+            val columns = parcel.readInt()
+            val rows = parcel.readInt()
             val ships = mutableListOf<Battleship>()
             while (parcel.dataAvail() > 0) {
                 ships.add(Battleship(parcel.createIntArray()!!))
             }
-            return OpponentParcelable(Opponent(ships))
+            return OpponentParcelable(ships, columns, rows)
         }
 
         override fun newArray(size: Int): Array<OpponentParcelable?> {

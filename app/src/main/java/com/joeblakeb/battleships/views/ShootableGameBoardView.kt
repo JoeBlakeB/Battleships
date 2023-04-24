@@ -7,6 +7,9 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.core.view.GestureDetectorCompat
 import com.joeblakeb.battleshipgame.Battleship
+import com.joeblakeb.battleshipgame.GameBoard
+import com.joeblakeb.battleshipgame.Opponent
+import uk.ac.bournemouth.ap.battleshiplib.BattleshipGrid
 import uk.ac.bournemouth.ap.battleshiplib.BattleshipOpponent
 import uk.ac.bournemouth.ap.battleshiplib.GuessCell
 import uk.ac.bournemouth.ap.battleshiplib.GuessResult
@@ -21,8 +24,17 @@ class ShootableGameBoardView : BaseGameBoardView {
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) :
             super(context, attrs, defStyleAttr)
 
+    override var gameBoard: GameBoard = GameBoard(Opponent.createRandomPlacement(SHIP_SIZES))
+
+    private val gridChangeListener: BattleshipGrid.BattleshipGridListener =
+        BattleshipGrid.BattleshipGridListener { _, _, _ -> invalidate() }
+
+    init {
+        gameBoard.addOnGridChangeListener(gridChangeListener)
+    }
+
     override var shipsToDisplay: MutableList<BattleshipOpponent.ShipInfo<Battleship>> =
-        mutableListOf<BattleshipOpponent.ShipInfo<Battleship>>()
+        mutableListOf()
 
     private val gestureDetector = GestureDetectorCompat(context, object:
         GestureDetector.SimpleOnGestureListener() {
@@ -36,8 +48,6 @@ class ShootableGameBoardView : BaseGameBoardView {
                 if (gameBoard.shootAt(cell) is GuessResult.SUNK) {
                     shipsToDisplay.add(gameBoard.opponent.shipAt(cell)!!)
                 }
-
-                invalidate()
             }
 
             return true

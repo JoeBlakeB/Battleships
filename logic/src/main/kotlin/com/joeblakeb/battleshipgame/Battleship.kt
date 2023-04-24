@@ -2,6 +2,9 @@ package com.joeblakeb.battleshipgame
 
 import uk.ac.bournemouth.ap.battleshiplib.Ship
 
+/**
+ * The class that holds information about a single ship.
+ */
 class Battleship(
     override val top: Int,
     override val left: Int,

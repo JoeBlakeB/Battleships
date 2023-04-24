@@ -6,6 +6,9 @@ import android.os.Bundle
 import android.widget.Button
 import com.joeblakeb.battleships.R
 
+/**
+ * The initial activity which opens when the app is opened.
+ */
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

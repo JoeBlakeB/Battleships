@@ -4,12 +4,17 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import com.joeblakeb.battleshipgame.MutableOpponent
 import com.joeblakeb.battleships.R
 import com.joeblakeb.battleships.utils.OpponentParcelable
 import com.joeblakeb.battleships.utils.PARCELABLE_OPPONENT
 import com.joeblakeb.battleships.utils.getParcelableCompat
 import com.joeblakeb.battleships.views.PlacementGameBoardView
 
+/**
+ * The activity to allow the player to select where
+ * they want to place their ships.
+ */
 class PlaceShipsActivity : AppCompatActivity() {
     private lateinit var confirmButton: Button
     private lateinit var placementGameBoardView: PlacementGameBoardView
@@ -24,7 +29,8 @@ class PlaceShipsActivity : AppCompatActivity() {
         confirmButton.setOnClickListener { confirmPlacement() }
 
         if (savedInstanceState != null) {
-            placementGameBoardView.gameBoard.opponent = savedInstanceState.getParcelableCompat<OpponentParcelable>(PARCELABLE_OPPONENT)!!.opponent
+            placementGameBoardView.mutableOpponent = MutableOpponent(
+                savedInstanceState.getParcelableCompat<OpponentParcelable>(PARCELABLE_OPPONENT)!!)
         }
     }
 

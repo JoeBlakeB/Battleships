@@ -12,7 +12,6 @@ import androidx.core.graphics.withTranslation
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import com.joeblakeb.battleshipgame.Battleship
 import com.joeblakeb.battleshipgame.GameBoard
-import com.joeblakeb.battleshipgame.Opponent
 import com.joeblakeb.battleships.R
 import uk.ac.bournemouth.ap.battleshiplib.BattleshipOpponent
 import uk.ac.bournemouth.ap.battleshiplib.GuessCell
@@ -33,7 +32,7 @@ abstract class BaseGameBoardView : View {
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) :
             super(context, attrs, defStyleAttr)
 
-    var gameBoard = GameBoard(Opponent.createRandomPlacement(SHIP_SIZES))
+    abstract val gameBoard: GameBoard
 
     protected open val shipsToDisplay: List<BattleshipOpponent.ShipInfo<Battleship>>
         get() = gameBoard.opponent.ships.mapIndexed {

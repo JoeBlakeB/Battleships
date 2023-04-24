@@ -5,8 +5,12 @@ import uk.ac.bournemouth.ap.battleshiplib.GuessCell
 import uk.ac.bournemouth.ap.battleshiplib.GuessResult
 import uk.ac.bournemouth.ap.lib.matrix.MutableMatrix
 
+/**
+ * The class that represents a battleship grid, including the players guesses
+ * and the ships they are trying to shoot at.
+ */
 class GameBoard(
-    override var opponent: Opponent
+    override val opponent: BaseOpponent
 ) : BattleshipGrid {
     override val columns: Int
         get() = opponent.columns

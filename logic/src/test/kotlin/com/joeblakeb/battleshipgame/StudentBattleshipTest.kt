@@ -11,7 +11,7 @@ class StudentBattleshipTest : BattleshipTest<Battleship>() {
         rows: Int,
         ships: List<Battleship>
     ): Opponent {
-        return Opponent(ships.toMutableList(), columns, rows)
+        return Opponent(ships, columns, rows)
     }
 
     override fun transformShip(sourceShip: Ship): Battleship {
