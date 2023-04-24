@@ -17,11 +17,18 @@ import uk.ac.bournemouth.ap.battleshiplib.GuessResult
  * The game board which allows the player to shoot at the enemy.
  * TODO (Only allows shots when it is the players turn).
  */
-class ShootableGameBoardView : BaseGameBoardView {
+class ShootableGameBoardView : BaseGameBoardView, GameplayGameBoardView {
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) :
             super(context, attrs, defStyleAttr)
+
+    /** Allow the player to use this view */
+    override fun haveTurn() {
+        nowPlayersTurn = true
+    }
+
+    var nowPlayersTurn: Boolean = false
 
     override lateinit var gameBoard: GameBoard
         private set
@@ -44,9 +51,11 @@ class ShootableGameBoardView : BaseGameBoardView {
 
         /** Shoot at a cell */
         override fun onSingleTapUp(e: MotionEvent): Boolean {
+            if (!nowPlayersTurn) return true
             val cell = gridCellAt(e.x, e.y) ?: return true
 
             if (gameBoard[cell] is GuessCell.UNSET) {
+                nowPlayersTurn = false
                 if (gameBoard.shootAt(cell) is GuessResult.SUNK) {
                     shipsToDisplay.add(gameBoard.opponent.shipAt(cell)!!)
                 }
