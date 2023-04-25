@@ -8,6 +8,7 @@ import android.view.MotionEvent
 import androidx.core.view.GestureDetectorCompat
 import com.joeblakeb.battleshipgame.Battleship
 import com.joeblakeb.battleshipgame.GameBoard
+import com.joeblakeb.battleshipgame.Opponent
 import uk.ac.bournemouth.ap.battleshiplib.BattleshipGrid
 import uk.ac.bournemouth.ap.battleshiplib.BattleshipOpponent
 import uk.ac.bournemouth.ap.battleshiplib.GuessCell
@@ -30,7 +31,7 @@ class ShootableGameBoardView : BaseGameBoardView, GameplayGameBoardView {
 
     var nowPlayersTurn: Boolean = false
 
-    override lateinit var gameBoard: GameBoard
+    override var gameBoard: GameBoard = GameBoard(Opponent(emptyList()))
         private set
 
     private val gridChangeListener: BattleshipGrid.BattleshipGridListener =

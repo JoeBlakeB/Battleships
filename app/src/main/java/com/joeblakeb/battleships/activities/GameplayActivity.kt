@@ -2,6 +2,7 @@ package com.joeblakeb.battleships.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
 import com.joeblakeb.battleshipgame.GameBoard
 import com.joeblakeb.battleshipgame.Opponent
 import com.joeblakeb.battleshipgame.RandomPlayer
@@ -25,6 +26,9 @@ class GameplayActivity : AppCompatActivity() {
     private lateinit var shootableGameBoardView: ShootableGameBoardView
     private lateinit var gameBoardViews: List<GameplayGameBoardView>
 
+    private lateinit var turnStatus: TextView
+    private lateinit var turnStrings: List<String>
+
     private var turn: Int = Random.nextInt(2)
 
     private val gridChangeListener: BattleshipGrid.BattleshipGridListener =
@@ -36,6 +40,7 @@ class GameplayActivity : AppCompatActivity() {
 
         attacksGameBoardView = findViewById(R.id.attacksGameBoardView)
         shootableGameBoardView = findViewById(R.id.shootableGameBoardView)
+        turnStatus = findViewById(R.id.textViewTurn)
 
         val playerShipsPlacement = intent.getParcelableExtraCompat<OpponentParcelable>(PARCELABLE_OPPONENT)!!
         attacksGameBoardView.setOtherPlayer(RandomPlayer(GameBoard(Opponent(playerShipsPlacement))))
@@ -46,8 +51,13 @@ class GameplayActivity : AppCompatActivity() {
         shootableGameBoardView.gameBoard.addOnGridChangeListener(gridChangeListener)
 
         gameBoardViews = listOf(
-            attacksGameBoardView,
-            shootableGameBoardView
+            shootableGameBoardView,
+            attacksGameBoardView
+        )
+
+        turnStrings = listOf(
+            getString(R.string.turn_you),
+            getString(R.string.turn_enemy)
         )
 
         doNextTurn()
@@ -55,6 +65,7 @@ class GameplayActivity : AppCompatActivity() {
 
     private fun doNextTurn() {
         turn = (turn + 1) % 2
+        turnStatus.text = turnStrings[turn]
         gameBoardViews[turn].haveTurn()
     }
 }

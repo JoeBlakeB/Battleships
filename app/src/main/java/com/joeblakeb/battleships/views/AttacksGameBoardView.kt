@@ -3,6 +3,7 @@ package com.joeblakeb.battleships.views
 import android.content.Context
 import android.util.AttributeSet
 import com.joeblakeb.battleshipgame.GameBoard
+import com.joeblakeb.battleshipgame.Opponent
 import com.joeblakeb.battleshipgame.OtherPlayer
 import uk.ac.bournemouth.ap.battleshiplib.BattleshipGrid
 
@@ -21,7 +22,7 @@ class AttacksGameBoardView : BaseGameBoardView, GameplayGameBoardView {
         player.doShot()
     }
 
-    override lateinit var gameBoard: GameBoard
+    override var gameBoard: GameBoard = GameBoard(Opponent(emptyList()))
         private set
 
     private lateinit var player: OtherPlayer

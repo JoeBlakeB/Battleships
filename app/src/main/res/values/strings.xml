@@ -4,4 +4,8 @@
     <string name="confirm_ships_button">Confirm Ship Placement</string>
     <string name="place_ships_title">Place Your Ships</string>
     <string name="place_ships_help">Drag and drop a ship to move it\nTap on a ship to rotate it</string>
+    <string name="name_enemy">Enemy</string>
+    <string name="name_you">You</string>
+    <string name="turn_enemy">Waiting for Enemy</string>
+    <string name="turn_you">Your Turn</string>
 </resources>

@@ -12,16 +12,48 @@
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:minWidth="100dp"
         android:minHeight="100dp"
         app:layout_constraintBottom_toTopOf="@+id/attacksGameBoardView"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewEnemy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/name_enemy"
+        android:textColor="@color/secondaryText"
+        android:textIsSelectable="false"
+        app:layout_constraintStart_toStartOf="@+id/shootableGameBoardView"
+        app:layout_constraintTop_toBottomOf="@+id/shootableGameBoardView" />
+
+    <TextView
+        android:id="@+id/textViewTurn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/mainText"
+        android:textIsSelectable="false"
+        app:layout_constraintBottom_toTopOf="@+id/attacksGameBoardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shootableGameBoardView" />
+
+    <TextView
+        android:id="@+id/textViewYou"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/name_you"
+        android:textColor="@color/secondaryText"
+        android:textIsSelectable="false"
+        app:layout_constraintBottom_toTopOf="@+id/attacksGameBoardView"
+        app:layout_constraintEnd_toEndOf="@+id/attacksGameBoardView" />
 
     <com.joeblakeb.battleships.views.AttacksGameBoardView
         android:id="@+id/attacksGameBoardView"
@@ -29,13 +61,14 @@
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:minWidth="100dp"
         android:minHeight="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/shootableGameBoardView" />
