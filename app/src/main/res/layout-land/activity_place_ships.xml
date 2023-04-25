@@ -25,8 +25,8 @@
             android:layout_marginRight="16dp"
             android:fontFamily="sans-serif-medium"
             android:text="@string/place_ships_title"
-            android:textColor="@color/mainText"
-            android:textSize="40sp"
+            android:textColor="@color/primaryText"
+            android:textSize="@dimen/primaryTextMedium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -45,7 +45,7 @@
             android:gravity="center"
             android:text="@string/place_ships_help"
             android:textColor="@color/secondaryText"
-            android:textSize="16sp"
+            android:textSize="@dimen/secondaryTextMedium"
             app:layout_constraintBottom_toTopOf="@+id/buttonConfirm"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -61,14 +61,14 @@
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
             android:clickable="true"
+            android:focusable="true"
             android:text="@string/confirm_ships_button"
             android:textAllCaps="false"
             android:textColor="@color/buttonText"
-            android:textSize="24sp"
+            android:textSize="@dimen/buttonTextMedium"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:focusable="true" />
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.joeblakeb.battleships.views.PlacementGameBoardView
@@ -80,6 +80,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="h,"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/constraintLayout"
         app:layout_constraintTop_toTopOf="parent" />

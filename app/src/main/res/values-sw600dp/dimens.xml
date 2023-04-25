@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="primaryTextLarge">64sp</dimen>
+    <dimen name="primaryTextMedium">40sp</dimen>
+    <dimen name="secondaryTextLarge">32sp</dimen>
+    <dimen name="secondaryTextMedium">24sp</dimen>
+    <dimen name="buttonTextLarge">32sp</dimen>
+    <dimen name="buttonTextMedium">24sp</dimen>
+    <dimen name="portraitGridSpacing">28dp</dimen>
+</resources>

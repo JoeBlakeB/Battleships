@@ -6,7 +6,7 @@
     <color name="colorSecondaryAccent">#742682</color>
     <color name="background">#fff</color>
 
-    <color name="mainText">#05000a</color>
+    <color name="primaryText">#05000a</color>
     <color name="secondaryText">#333</color>
     <color name="buttonText">#fff</color>
 

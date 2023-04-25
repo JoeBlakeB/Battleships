@@ -2,7 +2,7 @@
 <resources>
     <color name="background">#121416</color>
 
-    <color name="mainText">#eee</color>
+    <color name="primaryText">#eee</color>
     <color name="secondaryText">#79beff</color>
 
     <color name="gridLines">#ccc</color>

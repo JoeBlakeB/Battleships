@@ -15,7 +15,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="@dimen/portraitGridSpacing"
         android:minWidth="100dp"
         android:minHeight="100dp"
         app:layout_constraintBottom_toTopOf="@+id/attacksGameBoardView"
@@ -31,6 +31,7 @@
         android:text="@string/name_enemy"
         android:textColor="@color/secondaryText"
         android:textIsSelectable="false"
+        android:textSize="@dimen/secondaryTextMedium"
         app:layout_constraintStart_toStartOf="@+id/shootableGameBoardView"
         app:layout_constraintTop_toBottomOf="@+id/shootableGameBoardView" />
 
@@ -38,8 +39,9 @@
         android:id="@+id/textViewTurn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/mainText"
+        android:textColor="@color/primaryText"
         android:textIsSelectable="false"
+        android:textSize="@dimen/secondaryTextLarge"
         app:layout_constraintBottom_toTopOf="@+id/attacksGameBoardView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,6 +54,7 @@
         android:text="@string/name_you"
         android:textColor="@color/secondaryText"
         android:textIsSelectable="false"
+        android:textSize="@dimen/secondaryTextMedium"
         app:layout_constraintBottom_toTopOf="@+id/attacksGameBoardView"
         app:layout_constraintEnd_toEndOf="@+id/attacksGameBoardView" />
 
@@ -61,7 +64,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/portraitGridSpacing"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
