@@ -40,12 +40,17 @@ abstract class BaseGameBoardView : View {
         }
 
     private var drawableShips: Array<VectorDrawableCompat> = arrayOf(
-        VectorDrawableCompat.create(resources, R.drawable.ship_carrier, null)!!.apply { setTintMode(PorterDuff.Mode.SRC_ATOP) },    // 5
-        VectorDrawableCompat.create(resources, R.drawable.ship_battleship, null)!!.apply { setTintMode(PorterDuff.Mode.SRC_ATOP) }, // 4
-        VectorDrawableCompat.create(resources, R.drawable.ship_submarine, null)!!.apply { setTintMode(PorterDuff.Mode.SRC_ATOP) },  // 3
-        VectorDrawableCompat.create(resources, R.drawable.ship_cruiser, null)!!.apply { setTintMode(PorterDuff.Mode.SRC_ATOP) },    // 3
-        VectorDrawableCompat.create(resources, R.drawable.ship_destroyer, null)!!.apply { setTintMode(PorterDuff.Mode.SRC_ATOP) }   // 2
-    )
+        R.drawable.ship_carrier,    // 5
+        R.drawable.ship_battleship, // 4
+        R.drawable.ship_submarine,  // 3
+        R.drawable.ship_cruiser,    // 3
+        R.drawable.ship_destroyer   // 2
+    ).map {
+        VectorDrawableCompat.create(resources, it, null)!!.apply {
+            setTintMode(PorterDuff.Mode.SRC_ATOP)
+            mutate()
+        }
+    }.toTypedArray()
 
     private var drawableGuesses: Array<VectorDrawableCompat> = arrayOf(
         VectorDrawableCompat.create(resources, R.drawable.guess_miss, null)!!,
