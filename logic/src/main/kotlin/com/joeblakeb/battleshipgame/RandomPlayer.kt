@@ -1,5 +1,8 @@
 package com.joeblakeb.battleshipgame
 
+import uk.ac.bournemouth.ap.battleshiplib.GuessCell
+import java.util.Timer
+import kotlin.concurrent.timerTask
 import kotlin.random.Random
 
 /**
@@ -9,7 +12,13 @@ class RandomPlayer(
     override val gameBoard: GameBoard
 ) : OtherPlayer {
     override fun doShot() {
-        gameBoard.shootAt(Random.nextInt(10), Random.nextInt(10))
-        // TODO(only shoot at un guessed cells)
+        val unshotCells = gameBoard.getCoordinatesOfType<GuessCell.UNSET>()
+
+        // TODO(shoot at cells nearby to hits if there are any)
+
+        Timer().schedule(timerTask {
+            gameBoard.shootAt(unshotCells.random())
+        }, Random.nextLong(400, 800))
+
     }
 }

@@ -35,7 +35,7 @@ class ShootableGameBoardView : BaseGameBoardView, GameplayGameBoardView {
         private set
 
     private val gridChangeListener: BattleshipGrid.BattleshipGridListener =
-        BattleshipGrid.BattleshipGridListener { _, _, _ -> invalidate() }
+        BattleshipGrid.BattleshipGridListener { _, _, _ -> postInvalidate() }
 
     /** Set the game board and add the event listener to it */
     fun setGameBoard(newGameBoard: GameBoard) {

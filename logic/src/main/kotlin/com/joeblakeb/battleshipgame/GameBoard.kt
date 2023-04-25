@@ -4,6 +4,7 @@ import uk.ac.bournemouth.ap.battleshiplib.BattleshipGrid
 import uk.ac.bournemouth.ap.battleshiplib.GuessCell
 import uk.ac.bournemouth.ap.battleshiplib.GuessResult
 import uk.ac.bournemouth.ap.lib.matrix.MutableMatrix
+import uk.ac.bournemouth.ap.lib.matrix.ext.Coordinate
 
 /**
  * The class that represents a battleship grid, including the players guesses
@@ -18,7 +19,7 @@ class GameBoard(
     override val rows: Int
         get() = opponent.rows
 
-    private val guessGrid: MutableMatrix<GuessCell> = MutableMatrix(columns, rows, GuessCell.UNSET)
+    val guessGrid: MutableMatrix<GuessCell> = MutableMatrix(columns, rows, GuessCell.UNSET)
 
     override val shipsSunk: BooleanArray
         get() = opponent.ships.map { guessGrid[it.left, it.top] is GuessCell.SUNK }.toBooleanArray()
@@ -28,6 +29,23 @@ class GameBoard(
             "Can not get coordinates, they are outside of the grid"
         }
         return guessGrid[column, row]
+    }
+
+    /**
+     * Get all of the positions that are a certain guess result
+     *
+     * @return array of cell coordinates
+     */
+    inline fun <reified T: GuessCell> getCoordinatesOfType(): List<Coordinate> {
+        val coordinates = mutableListOf<Coordinate>()
+        for (row in 0 until rows) {
+            for (column in 0 until columns) {
+                if (guessGrid[column, row] is T) {
+                    coordinates.add(Coordinate(column, row))
+                }
+            }
+        }
+        return coordinates
     }
 
     /**

@@ -32,7 +32,7 @@ class GameplayActivity : AppCompatActivity() {
     private var turn: Int = Random.nextInt(2)
 
     private val gridChangeListener: BattleshipGrid.BattleshipGridListener =
-        BattleshipGrid.BattleshipGridListener { _, _, _ -> doNextTurn() }
+        BattleshipGrid.BattleshipGridListener { _, _, _ -> runOnUiThread { doNextTurn() } }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

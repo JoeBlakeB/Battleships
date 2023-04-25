@@ -28,7 +28,7 @@ class AttacksGameBoardView : BaseGameBoardView, GameplayGameBoardView {
     private lateinit var player: OtherPlayer
 
     private val gridChangeListener: BattleshipGrid.BattleshipGridListener =
-        BattleshipGrid.BattleshipGridListener { _, _, _ -> invalidate() }
+        BattleshipGrid.BattleshipGridListener { _, _, _ -> postInvalidate() }
 
     /** Set the other player logic and game board, then add the event listener to it */
     fun setOtherPlayer(newOtherPlayer: OtherPlayer) {
