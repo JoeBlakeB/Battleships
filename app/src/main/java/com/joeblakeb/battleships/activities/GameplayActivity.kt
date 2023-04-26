@@ -43,6 +43,10 @@ class GameplayActivity : AppCompatActivity() {
 
     private var selectedOtherPlayer: Int = 1
 
+    /**
+     * Either 1 or 2 for each player, or greater than 8 after screen rotate
+     * to stop bug causing computer to take multiple turns.
+     */
     private var turn: Int = Random.nextInt(2)
 
     private val gridChangeListener: BattleshipGrid.BattleshipGridListener =
@@ -86,14 +90,24 @@ class GameplayActivity : AppCompatActivity() {
             getString(R.string.turn_enemy)
         )
 
-        doNextTurn()
+        if (turn <= 8) {
+            doNextTurn()
+        } else {
+            // Screen was rotated and it is the computers turn,
+            // wait so they dont get multiple turns.
+            turnStatus.text = turnStrings[1]
+        }
     }
 
     /**
      * Tell the next player to have their turn, or if the game is over tell the user.
      */
     private fun doNextTurn() {
+        if (turn == 8) {
+            turn -= 9
+        }
         if (attacksGameBoardView.gameBoard.isFinished or shootableGameBoardView.gameBoard.isFinished) {
+            turn %= 2
             turnStatus.text = ""
             val snackbar = Snackbar.make(
                 gameBoardViews[turn] as View,
@@ -121,7 +135,7 @@ class GameplayActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
         outState.putInt(EXTRA_CURRENT_TURN,
             if (attacksGameBoardView.gameBoard.isFinished or shootableGameBoardView.gameBoard.isFinished)
-                turn else ((turn + 1) % 2))
+                turn else (turn % 8) + 8)
         attacksGameBoardView.gameBoard.removeOnGridChangeListener(gridChangeListener)
         shootableGameBoardView.gameBoard.removeOnGridChangeListener(gridChangeListener)
         outState.putParcelable(EXTRA_GAMEBOARD_ATTACKS, GameBoardParcelable(attacksGameBoardView.gameBoard))
