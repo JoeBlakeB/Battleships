@@ -12,7 +12,6 @@ import com.joeblakeb.battleshipgame.Opponent
 import uk.ac.bournemouth.ap.battleshiplib.BattleshipGrid
 import uk.ac.bournemouth.ap.battleshiplib.BattleshipOpponent
 import uk.ac.bournemouth.ap.battleshiplib.GuessCell
-import uk.ac.bournemouth.ap.battleshiplib.GuessResult
 
 /**
  * The game board which allows the player to shoot at the enemy.
@@ -43,8 +42,10 @@ class ShootableGameBoardView : BaseGameBoardView, GameplayGameBoardView {
         gameBoard.addOnGridChangeListener(gridChangeListener)
     }
 
-    override var shipsToDisplay: MutableList<BattleshipOpponent.ShipInfo<Battleship>> =
-        mutableListOf()
+    override val shipsToDisplay: List<BattleshipOpponent.ShipInfo<Battleship>>
+        get() = gameBoard.opponent.ships.mapIndexed {
+                index, ship -> BattleshipOpponent.ShipInfo(index, ship)
+        }.filter { gameBoard.shipsSunk[it.index] }
 
     private val gestureDetector = GestureDetectorCompat(context, object:
         GestureDetector.SimpleOnGestureListener() {
@@ -57,9 +58,7 @@ class ShootableGameBoardView : BaseGameBoardView, GameplayGameBoardView {
 
             if (gameBoard[cell] is GuessCell.UNSET) {
                 nowPlayersTurn = false
-                if (gameBoard.shootAt(cell) is GuessResult.SUNK) {
-                    shipsToDisplay.add(gameBoard.opponent.shipAt(cell)!!)
-                }
+                gameBoard.shootAt(cell)
             }
 
             return true

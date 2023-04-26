@@ -11,15 +11,14 @@ import uk.ac.bournemouth.ap.lib.matrix.ext.Coordinate
  * and the ships they are trying to shoot at.
  */
 class GameBoard(
-    override val opponent: BaseOpponent
+    override val opponent: BaseOpponent,
+    val guessGrid: MutableMatrix<GuessCell> = MutableMatrix(opponent.columns, opponent.rows, GuessCell.UNSET)
 ) : BattleshipGrid {
     override val columns: Int
         get() = opponent.columns
 
     override val rows: Int
         get() = opponent.rows
-
-    val guessGrid: MutableMatrix<GuessCell> = MutableMatrix(columns, rows, GuessCell.UNSET)
 
     override val shipsSunk: BooleanArray
         get() = opponent.ships.map { guessGrid[it.left, it.top] is GuessCell.SUNK }.toBooleanArray()

@@ -11,11 +11,16 @@ import com.joeblakeb.battleshipgame.OtherPlayer
 import com.joeblakeb.battleshipgame.ProbabilityPlayer
 import com.joeblakeb.battleshipgame.RandomPlayer
 import com.joeblakeb.battleships.R
+import com.joeblakeb.battleships.utils.EXTRA_CURRENT_TURN
+import com.joeblakeb.battleships.utils.EXTRA_GAMEBOARD_ATTACKS
+import com.joeblakeb.battleships.utils.EXTRA_GAMEBOARD_SHOOTABLE
 import com.joeblakeb.battleships.utils.EXTRA_SHIP_PLACEMENT
 import com.joeblakeb.battleships.utils.EXTRA_OTHER_PLAYER
 import com.joeblakeb.battleships.utils.OTHER_PLAYER_PROBABILITY
 import com.joeblakeb.battleships.utils.OTHER_PLAYER_RANDOM
+import com.joeblakeb.battleships.utils.GameBoardParcelable
 import com.joeblakeb.battleships.utils.OpponentParcelable
+import com.joeblakeb.battleships.utils.getParcelableCompat
 import com.joeblakeb.battleships.utils.getParcelableExtraCompat
 import com.joeblakeb.battleships.views.AttacksGameBoardView
 import com.joeblakeb.battleships.views.GameplayGameBoardView
@@ -53,12 +58,20 @@ class GameplayActivity : AppCompatActivity() {
 
         selectedOtherPlayer = intent.getIntExtra(EXTRA_OTHER_PLAYER, OTHER_PLAYER_RANDOM)
 
-        val playerShipsPlacement = intent.getParcelableExtraCompat<OpponentParcelable>(EXTRA_SHIP_PLACEMENT)!!
-        val otherPlayerGameBoard = GameBoard(Opponent(playerShipsPlacement))
-        attacksGameBoardView.setOtherPlayer(createOtherPlayer(selectedOtherPlayer, otherPlayerGameBoard))
+        if (savedInstanceState != null) {
+            turn = savedInstanceState.getInt(EXTRA_CURRENT_TURN)
+            attacksGameBoardView.setOtherPlayer(createOtherPlayer(selectedOtherPlayer,
+                savedInstanceState.getParcelableCompat<GameBoardParcelable>(EXTRA_GAMEBOARD_ATTACKS)!!.gameBoard))
+            shootableGameBoardView.setGameBoard(
+                savedInstanceState.getParcelableCompat<GameBoardParcelable>(EXTRA_GAMEBOARD_SHOOTABLE)!!.gameBoard)
+        } else {
+            val playerShipsPlacement = intent.getParcelableExtraCompat<OpponentParcelable>(EXTRA_SHIP_PLACEMENT)!!
+            val otherPlayerGameBoard = GameBoard(Opponent(playerShipsPlacement))
+            attacksGameBoardView.setOtherPlayer(createOtherPlayer(selectedOtherPlayer, otherPlayerGameBoard))
 
-        val opponentShipsPlacement = Opponent.createRandomPlacement(SHIP_SIZES)
-        shootableGameBoardView.setGameBoard(GameBoard(opponentShipsPlacement))
+            val opponentShipsPlacement = Opponent.createRandomPlacement(SHIP_SIZES)
+            shootableGameBoardView.setGameBoard(GameBoard(opponentShipsPlacement))
+        }
 
         attacksGameBoardView.gameBoard.addOnGridChangeListener(gridChangeListener)
         shootableGameBoardView.gameBoard.addOnGridChangeListener(gridChangeListener)
@@ -99,6 +112,20 @@ class GameplayActivity : AppCompatActivity() {
             turnStatus.text = turnStrings[turn]
             gameBoardViews[turn].haveTurn()
         }
+    }
+
+    /**
+     * Save the placement game board when the screen rotates so state is not lost.
+     */
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(EXTRA_CURRENT_TURN,
+            if (attacksGameBoardView.gameBoard.isFinished or shootableGameBoardView.gameBoard.isFinished)
+                turn else ((turn + 1) % 2))
+        attacksGameBoardView.gameBoard.removeOnGridChangeListener(gridChangeListener)
+        shootableGameBoardView.gameBoard.removeOnGridChangeListener(gridChangeListener)
+        outState.putParcelable(EXTRA_GAMEBOARD_ATTACKS, GameBoardParcelable(attacksGameBoardView.gameBoard))
+        outState.putParcelable(EXTRA_GAMEBOARD_SHOOTABLE, GameBoardParcelable(shootableGameBoardView.gameBoard))
     }
 
     /**
