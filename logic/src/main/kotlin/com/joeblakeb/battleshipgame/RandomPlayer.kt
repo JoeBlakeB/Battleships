@@ -11,14 +11,24 @@ import kotlin.random.Random
 class RandomPlayer(
     override val gameBoard: GameBoard
 ) : OtherPlayer {
-    override fun doShot() {
-        val unshotCells = gameBoard.getCoordinatesOfType<GuessCell.UNSET>()
 
-        // TODO(shoot at cells nearby to hits if there are any)
+    /**
+     * Shoot at a random cell, if there is a hit then shoot near to that cell.
+     */
+    override fun doShot() {
+        var unshotCells = gameBoard.getCoordinatesOfType<GuessCell.UNSET>()
+        val hitCells = gameBoard.getCoordinatesOfType<GuessCell.HIT>()
+        var shotDelay = SHOT_DELAY_SLOW
+
+        if (hitCells.isNotEmpty()) {
+            unshotCells = unshotCells.filter { it.isTouchingAny(hitCells) }
+            shotDelay = SHOT_DELAY_QUICK
+        }
+
+        val cellToShoot = unshotCells.random()
 
         Timer().schedule(timerTask {
-            gameBoard.shootAt(unshotCells.random())
-        }, Random.nextLong(400, 800))
-
+            gameBoard.shootAt(cellToShoot)
+        }, Random.nextLong(shotDelay, shotDelay * 2))
     }
 }
