@@ -2,7 +2,9 @@ package com.joeblakeb.battleships.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
+import com.google.android.material.snackbar.Snackbar
 import com.joeblakeb.battleshipgame.GameBoard
 import com.joeblakeb.battleshipgame.Opponent
 import com.joeblakeb.battleshipgame.RandomPlayer
@@ -64,8 +66,24 @@ class GameplayActivity : AppCompatActivity() {
     }
 
     private fun doNextTurn() {
-        turn = (turn + 1) % 2
-        turnStatus.text = turnStrings[turn]
-        gameBoardViews[turn].haveTurn()
+        if (attacksGameBoardView.gameBoard.isFinished or shootableGameBoardView.gameBoard.isFinished) {
+            turnStatus.text = ""
+            val snackbar = Snackbar.make(
+                gameBoardViews[turn] as View,
+                listOf(
+                    R.string.win_you,
+                    R.string.win_enemy
+                )[turn],
+                Snackbar.LENGTH_INDEFINITE
+            )
+            snackbar.setAction(R.string.play_again_button) {
+                finish()
+            }
+            snackbar.show()
+        } else {
+            turn = (turn + 1) % 2
+            turnStatus.text = turnStrings[turn]
+            gameBoardViews[turn].haveTurn()
+        }
     }
 }
