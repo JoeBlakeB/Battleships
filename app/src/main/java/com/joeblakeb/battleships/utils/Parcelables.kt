@@ -8,7 +8,11 @@ import android.os.Parcelable
 import com.joeblakeb.battleshipgame.BaseOpponent
 import com.joeblakeb.battleshipgame.Battleship
 
-const val PARCELABLE_OPPONENT: String = "com.joeblakeb.battleships.PlayerShipsPlacement"
+const val EXTRA_SHIP_PLACEMENT: String = "com.joeblakeb.battleships.PlayerShipsPlacement"
+const val EXTRA_OTHER_PLAYER: String = "com.joeblakeb.battleships.OtherPlayerType"
+
+const val OTHER_PLAYER_RANDOM: Int = 1
+const val OTHER_PLAYER_PROBABILITY: Int = 2
 
 /**
  * A subclass of BaseOpponent for creating and reading parcelables containing opponent data.

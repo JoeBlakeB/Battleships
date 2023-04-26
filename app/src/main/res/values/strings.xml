@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Battleships</string>
-    <string name="play_game_button">Play Game</string>
+    <string name="play_game_title">Play Game</string>
+    <string name="play_game_button_easy">Easy Mode</string>
+    <string name="play_game_button_hard">Hard Mode</string>
     <string name="play_again_button">Play Again</string>
     <string name="confirm_ships_button">Confirm Ship Placement</string>
     <string name="place_ships_title">Place Your Ships</string>
