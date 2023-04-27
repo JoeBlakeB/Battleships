@@ -36,6 +36,7 @@ data class OpponentParcelable(
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeInt(columns)
         dest.writeInt(rows)
+        dest.writeInt(ships.size)
         for (ship in ships) {
             dest.writeIntArray(ship.toIntArray())
         }
@@ -45,8 +46,9 @@ data class OpponentParcelable(
         override fun createFromParcel(parcel: Parcel): OpponentParcelable {
             val columns = parcel.readInt()
             val rows = parcel.readInt()
+            val shipCount = parcel.readInt()
             val ships = mutableListOf<Battleship>()
-            while (parcel.dataAvail() > 0) {
+            for (i in 0 until shipCount) {
                 ships.add(Battleship(parcel.createIntArray()!!))
             }
             return OpponentParcelable(ships, columns, rows)
