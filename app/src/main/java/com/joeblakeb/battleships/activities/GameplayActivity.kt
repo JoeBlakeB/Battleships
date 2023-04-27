@@ -38,6 +38,7 @@ class GameplayActivity : AppCompatActivity() {
     private lateinit var shootableGameBoardView: ShootableGameBoardView
     private lateinit var gameBoardViews: List<GameplayGameBoardView>
 
+    private lateinit var textViewEnemy: TextView
     private lateinit var turnStatus: TextView
     private lateinit var turnStrings: List<String>
 
@@ -58,6 +59,7 @@ class GameplayActivity : AppCompatActivity() {
 
         attacksGameBoardView = findViewById(R.id.attacksGameBoardView)
         shootableGameBoardView = findViewById(R.id.shootableGameBoardView)
+        textViewEnemy = findViewById(R.id.textViewEnemy)
         turnStatus = findViewById(R.id.textViewTurn)
 
         selectedOtherPlayer = intent.getIntExtra(EXTRA_OTHER_PLAYER, OTHER_PLAYER_RANDOM)
@@ -151,8 +153,15 @@ class GameplayActivity : AppCompatActivity() {
      */
     private fun createOtherPlayer(selectedOtherPlayer: Int, otherPlayerGameBoard: GameBoard): OtherPlayer {
         return when(selectedOtherPlayer) {
-            OTHER_PLAYER_PROBABILITY -> ProbabilityPlayer(otherPlayerGameBoard)
-            else -> RandomPlayer(otherPlayerGameBoard)
+            OTHER_PLAYER_PROBABILITY -> {
+                textViewEnemy.text = getString(R.string.name_enemy_hard)
+                ProbabilityPlayer(otherPlayerGameBoard)
+            }
+
+            else -> {
+                textViewEnemy.text = getString(R.string.name_enemy_easy)
+                RandomPlayer(otherPlayerGameBoard)
+            }
         }
     }
 }

@@ -6,5 +6,5 @@
     <dimen name="secondaryTextMedium">24sp</dimen>
     <dimen name="buttonTextLarge">32sp</dimen>
     <dimen name="buttonTextMedium">24sp</dimen>
-    <dimen name="portraitGridSpacing">28dp</dimen>
+    <dimen name="portraitGridSpacing">32dp</dimen>
 </resources>

@@ -28,7 +28,6 @@
         android:id="@+id/textViewEnemy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/name_enemy"
         android:textColor="@color/secondaryText"
         android:textIsSelectable="false"
         android:textSize="@dimen/secondaryTextMedium"
