@@ -1,5 +1,6 @@
 package com.joeblakeb.battleshipgame
 
+import uk.ac.bournemouth.ap.battleshiplib.BattleshipGrid.Companion.DEFAULT_SHIP_SIZES
 import uk.ac.bournemouth.ap.battleshiplib.GuessCell
 import uk.ac.bournemouth.ap.lib.matrix.ext.Coordinate
 import java.util.Timer
@@ -22,6 +23,11 @@ class ProbabilityPlayer(
         Coordinate(0, -1)
     )
 
+    private val unsunkShipSizes
+        get() = DEFAULT_SHIP_SIZES.filterIndexed {
+            index, _ -> !gameBoard.shipsSunk[index]
+        }
+
     /**
      * Check if there are any already hit ships, and call the correct
      * function for shooting at the grid.
@@ -34,14 +40,36 @@ class ProbabilityPlayer(
         }, Random.nextLong(SHOT_DELAY_QUICK, SHOT_DELAY_SLOW))
 
     /**
-     * TODO
      * Shoot at one of the cells with the highest chance of containing a ship,
      * randomly choses one of the most likely to avoid haivng a consistent pattern.
      */
     private fun shootAtAny() {
-        val unshotCells = gameBoard.getCoordinatesOfType<GuessCell.UNSET>()
-        gameBoard.shootAt(unshotCells.random())
+        val unshotCells = gameBoard.getCoordinatesOfType<GuessCell.UNSET>().map { PotentialShot(it) }
+
+        // Add score based on how many empty in each direction there are
+        for (unshotCell in unshotCells) {
+            for (direction in directions) {
+                for (distance in 1 until unsunkShipSizes.max()) {
+                    if (gameBoard.getOrNull(unshotCell.coordinate + (direction * distance)) is GuessCell.UNSET) {
+                        unshotCell.score += 10 + (5 * unsunkShipSizes.filter { it > distance }.size)
+                    } else {
+                        break
+                    }
+                }
+            }
+        }
+
+        // Do one of the highest score shots at random
+        val scoreThreshold = (unshotCells.maxBy { it.score }.score * 0.8).toInt()
+        gameBoard.shootAt(unshotCells.filter { it.score >= scoreThreshold }.random().coordinate)
     }
+
+    /** A potential shot when there are no known ship locations. */
+    private data class PotentialShot (
+        val coordinate: Coordinate,
+        /** A higher score means a shot is more likely to be a hit. */
+        var score: Int = 0
+    )
 
     /**
      * Shoot at a cell where an already found ship is likely to be, if there are two
@@ -73,7 +101,7 @@ class ProbabilityPlayer(
         }
 
         // Do one of the highest score shots at random
-        val maxScore = nextShots.maxByOrNull { it.score }?.score
+        val maxScore = nextShots.maxBy { it.score }.score
         gameBoard.shootAt(nextShots.filter { it.score == maxScore }.random().cellToShoot)
     }
 
