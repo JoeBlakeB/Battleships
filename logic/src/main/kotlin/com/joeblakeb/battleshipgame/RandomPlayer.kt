@@ -21,7 +21,7 @@ class RandomPlayer(
         var shotDelay = SHOT_DELAY_SLOW
 
         if (hitCells.isNotEmpty()) {
-            unshotCells = unshotCells.filter { it.isTouchingAny(hitCells) }
+            unshotCells = unshotCells.filter { hitCells.any { other -> other.isTouching(it) } }
             shotDelay = SHOT_DELAY_QUICK
         }
 

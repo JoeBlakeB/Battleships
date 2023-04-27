@@ -30,6 +30,14 @@ class GameBoard(
         return guessGrid[column, row]
     }
 
+    /** Get the GuessCell of a point, or null if it is not in the grid. */
+    fun getOrNull(column: Int, row: Int): GuessCell? {
+        if (column < 0 || row < 0 || column >= columns || row >= rows) {
+            return null
+        }
+        return guessGrid[column, row]
+    }
+
     /**
      * Get all of the positions that are a certain guess result
      *
@@ -124,3 +132,6 @@ class GameBoard(
             }
         } + "\n))"
 }
+
+/** Get the GuessCell of a point, or null if it is not in the grid */
+fun GameBoard.getOrNull(coordinate: Coordinate): GuessCell? = getOrNull(coordinate.x, coordinate.y)
