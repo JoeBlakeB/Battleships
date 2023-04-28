@@ -8,8 +8,8 @@ import com.joeblakeb.battleshipgame.OtherPlayer
 import uk.ac.bournemouth.ap.battleshiplib.BattleshipGrid
 
 /**
- * TODO (The game board view which shows the attacks of an enemy
- * against the players ships).
+ * The game board view which shows the attacks of an enemy
+ * against the players ships.
  */
 class AttacksGameBoardView : BaseGameBoardView, GameplayGameBoardView {
     constructor(context: Context?) : super(context)

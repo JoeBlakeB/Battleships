@@ -8,6 +8,7 @@ import android.view.MotionEvent
 import androidx.core.view.GestureDetectorCompat
 import com.joeblakeb.battleshipgame.GameBoard
 import com.joeblakeb.battleshipgame.MutableOpponent
+import uk.ac.bournemouth.ap.battleshiplib.BattleshipGrid
 import uk.ac.bournemouth.ap.lib.matrix.ext.Coordinate
 
 /**
@@ -21,7 +22,7 @@ class PlacementGameBoardView : BaseGameBoardView {
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) :
             super(context, attrs, defStyleAttr)
 
-    var mutableOpponent: MutableOpponent = MutableOpponent.createRandomPlacement(SHIP_SIZES)
+    var mutableOpponent: MutableOpponent = MutableOpponent.createRandomPlacement(BattleshipGrid.DEFAULT_SHIP_SIZES)
         set(value) {
             field = value
             gameBoard = GameBoard(value)

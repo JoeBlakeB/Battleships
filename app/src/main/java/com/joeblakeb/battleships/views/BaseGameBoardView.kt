@@ -17,8 +17,6 @@ import uk.ac.bournemouth.ap.battleshiplib.BattleshipOpponent
 import uk.ac.bournemouth.ap.battleshiplib.GuessCell
 import uk.ac.bournemouth.ap.lib.matrix.ext.Coordinate
 
-val SHIP_SIZES: IntArray = intArrayOf(5,4,3,3,2)
-
 /**
  * The base code for all battleship game boards which draws a grid
  * with ships on top according to the shipsToDisplay list and
@@ -34,11 +32,13 @@ abstract class BaseGameBoardView : View {
 
     abstract val gameBoard: GameBoard
 
+    /** The ships that onDraw will show on the grid */
     protected open val shipsToDisplay: List<BattleshipOpponent.ShipInfo<Battleship>>
         get() = gameBoard.opponent.ships.mapIndexed {
                 index, ship -> BattleshipOpponent.ShipInfo(index, ship)
         }
 
+    /** Vectors for each of the ships in size order */
     private var drawableShips: Array<VectorDrawableCompat> = arrayOf(
         R.drawable.ship_carrier,    // 5
         R.drawable.ship_battleship, // 4
@@ -52,6 +52,10 @@ abstract class BaseGameBoardView : View {
         }
     }.toTypedArray()
 
+    /**
+     * Vectors for drawing hit and miss markers,
+     * miss is used for sunk as the ship will be red when sunk
+     */
     private var drawableGuesses: Array<VectorDrawableCompat> = arrayOf(
         VectorDrawableCompat.create(resources, R.drawable.guess_miss, null)!!,
         VectorDrawableCompat.create(resources, R.drawable.guess_hit, null)!!
@@ -162,6 +166,10 @@ abstract class BaseGameBoardView : View {
         }
     }
 
+    /**
+     * Recalculate dimension values that can be reused each time
+     * the grid, ships, and shots are drawn.
+     */
     private fun recalculateDimensions(w: Int = width, h: Int = height) {
         val diameterX = w/(columns + (columns+1)*cellSpacingRatio)
         val diameterY = h/(rows + (rows+1)*cellSpacingRatio)

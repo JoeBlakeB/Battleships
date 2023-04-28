@@ -24,7 +24,6 @@ import com.joeblakeb.battleships.utils.getParcelableCompat
 import com.joeblakeb.battleships.utils.getParcelableExtraCompat
 import com.joeblakeb.battleships.views.AttacksGameBoardView
 import com.joeblakeb.battleships.views.GameplayGameBoardView
-import com.joeblakeb.battleships.views.SHIP_SIZES
 import com.joeblakeb.battleships.views.ShootableGameBoardView
 import uk.ac.bournemouth.ap.battleshiplib.BattleshipGrid
 import kotlin.random.Random
@@ -75,7 +74,7 @@ class GameplayActivity : AppCompatActivity() {
             val otherPlayerGameBoard = GameBoard(Opponent(playerShipsPlacement))
             attacksGameBoardView.setOtherPlayer(createOtherPlayer(selectedOtherPlayer, otherPlayerGameBoard))
 
-            val opponentShipsPlacement = Opponent.createRandomPlacement(SHIP_SIZES)
+            val opponentShipsPlacement = Opponent.createRandomPlacement(BattleshipGrid.DEFAULT_SHIP_SIZES)
             shootableGameBoardView.setGameBoard(GameBoard(opponentShipsPlacement))
         }
 

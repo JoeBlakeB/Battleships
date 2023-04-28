@@ -1,7 +1,6 @@
 package com.joeblakeb.battleshipgame
 
 import uk.ac.bournemouth.ap.battleshiplib.BattleshipOpponent
-import uk.ac.bournemouth.ap.lib.matrix.ext.Coordinate
 
 /**
  * The base code used in all types of opponents.
@@ -11,13 +10,17 @@ abstract class BaseOpponent : BattleshipOpponent {
     abstract override val columns: Int
     abstract override val rows: Int
 
+    /**
+     * Determine the ship at a given position at a given position.
+     *
+     * @param column of the cell to check
+     * @param row of the cell to check
+     * @return ShipInfo with the ship and its index
+     */
     override fun shipAt(column: Int, row: Int): BattleshipOpponent.ShipInfo<Battleship>? {
         val ship = ships.find { it.isAtPosition(column, row) }
         return ship?.let { BattleshipOpponent.ShipInfo(ships.indexOf(ship), it) }
     }
-
-    fun shipAt(coordinate: Coordinate): BattleshipOpponent.ShipInfo<Battleship>? =
-        shipAt(coordinate.x, coordinate.y)
 
     /**
      * Returns the string representation of the ships on a grid.

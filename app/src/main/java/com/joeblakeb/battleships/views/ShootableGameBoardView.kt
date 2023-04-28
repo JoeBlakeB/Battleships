@@ -15,7 +15,6 @@ import uk.ac.bournemouth.ap.battleshiplib.GuessCell
 
 /**
  * The game board which allows the player to shoot at the enemy.
- * TODO (Only allows shots when it is the players turn).
  */
 class ShootableGameBoardView : BaseGameBoardView, GameplayGameBoardView {
     constructor(context: Context?) : super(context)

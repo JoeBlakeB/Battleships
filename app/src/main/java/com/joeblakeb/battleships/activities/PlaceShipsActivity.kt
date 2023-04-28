@@ -27,8 +27,8 @@ class PlaceShipsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place_ships)
 
-        confirmButton = findViewById<Button>(R.id.buttonConfirm)
-        placementGameBoardView = findViewById<PlacementGameBoardView>(R.id.placementGameBoardView)
+        confirmButton = findViewById(R.id.buttonConfirm)
+        placementGameBoardView = findViewById(R.id.placementGameBoardView)
 
         confirmButton.setOnClickListener { confirmPlacement() }
 
