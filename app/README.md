@@ -1,13 +1,14 @@
-## App module
-This is the final Android application module. It contains all
-Android specific code and uses the logic module for the game. To get started you will have to create
-a new activity for the app (preferably with the new activity wizzard).
+# App Module
 
-**Note** Do not forget to mark an activity as main by adding into the activity tag the following:
-```xml
-    <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
+This is the Android application module. It contains all of the Android specific code and uses the logic module for the game. 
 
-        <category android:name="android.intent.category.LAUNCHER" />
-    </intent-filter>
-```
+## Features
+
+- Ship placement activity with drag and drop to move ships & tap to rotate
+- Support for different devices and configurations
+  - Including: screen size, orientation, android version, light and dark mode
+  - Languages: English, French, and Spanish
+  - Does not lose state when changing device settings
+- Vectors for showing where ships are & custom vector app icon
+- Tells user whos turn it currently is and who has won a game
+- Different game difficulties
