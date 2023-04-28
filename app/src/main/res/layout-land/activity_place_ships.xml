@@ -11,6 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/placementGameBoardView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -24,6 +25,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:fontFamily="sans-serif-medium"
+            android:gravity="center"
             android:text="@string/place_ships_title"
             android:textColor="@color/primaryText"
             android:textSize="@dimen/primaryTextMedium"

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Battleships</string>
+    <string name="app_name" translatable="false">Battleships</string>
     <string name="play_game_title">Play Game</string>
     <string name="play_game_button_easy">Easy Mode</string>
     <string name="play_game_button_hard">Hard Mode</string>

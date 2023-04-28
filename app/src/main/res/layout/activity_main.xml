@@ -41,7 +41,11 @@
             android:id="@+id/playGameTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             android:fontFamily="sans-serif-medium"
             android:text="@string/play_game_title"
             android:textColor="@color/primaryText"
@@ -83,7 +87,6 @@
             android:textSize="@dimen/buttonTextLarge"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/buttonPlayEasy" />
     </androidx.constraintlayout.widget.ConstraintLayout>

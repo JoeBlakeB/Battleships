@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Translated using Google Translate (translate.google.com, 2023) -->
+<resources>
+    <string name="play_game_title">Jouer le Jeu</string>
+    <string name="play_game_button_easy">Facile</string>
+    <string name="play_game_button_hard">Difficile</string>
+    <string name="play_again_button">Rejouer</string>
+    <string name="confirm_ships_button">Confirmer les Emplacements</string>
+    <string name="place_ships_title">Sélectionnez des emplacements</string>
+    <string name="place_ships_help">Glisser-Déposer pour Déplacer\nAppuyez pour faire pivoter</string>
+    <string name="name_enemy_easy">Adversaire Facile</string>
+    <string name="name_enemy_hard">Adversaire Dur</string>
+    <string name="name_you">Toi</string>
+    <string name="turn_enemy">En Attente de l\'adversaire</string>
+    <string name="turn_you">À ton Tour</string>
+    <string name="win_enemy">Vous avez perdu la partie, bonne chance la prochaine fois!</string>
+    <string name="win_you">Félicitations, vous avez gagné le jeu!</string>
+</resources>
