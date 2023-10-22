@@ -1,7 +1,5 @@
 # Battleships
 
-[![](https://img.shields.io/endpoint?color=green&logo=google-play&logoColor=green&url=https%3A%2F%2Fplay.cuzi.workers.dev%2Fplay%3Fi%3Dcom.joeblakeb.battleships%26l%3DGoole%2520Play%26m%3D%24version)](https://play.google.com/store/apps/details?id=com.joeblakeb.battleships)
-
 An Android app for Battleships using Kotlin by Joe Baker.
 
 ## Features
