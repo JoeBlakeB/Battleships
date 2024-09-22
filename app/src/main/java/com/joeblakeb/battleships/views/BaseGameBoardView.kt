@@ -99,10 +99,8 @@ abstract class BaseGameBoardView : View {
      *
      * Ship rotation done with help from Paul De Vrieze.
      */
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-
-        if (canvas == null) return
 
         canvas.drawRect(gridLeft, gridTop, gridRight, gridBottom, gridPaint)
 

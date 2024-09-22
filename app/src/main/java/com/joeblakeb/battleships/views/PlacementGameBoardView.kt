@@ -45,7 +45,8 @@ class PlacementGameBoardView : BaseGameBoardView {
         }
 
         /** Try to move the selected ship to where the user dragged it to. */
-        override fun onScroll(e1: MotionEvent, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
+        override fun onScroll(e1: MotionEvent?, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
+            if (e1 == null) return false
             val shipToMove = selectedShip ?: return true
             val newCoordinate = gridCellAt(e2.x, e2.y) ?: return true
 
