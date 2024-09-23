@@ -14,4 +14,16 @@
     <string name="turn_you">Your Turn</string>
     <string name="win_enemy">You have lost the game, better luck next time!</string>
     <string name="win_you">Congratulations, you have won the game!</string>
+
+    <string-array name="footer_links_names">
+        <item>Website</item>
+        <item>GitHub</item>
+        <item>Privacy Policy</item>
+    </string-array>
+
+    <string-array name="footer_links_urls">
+        <item>https://joeblakeb.com/projects/battleships/</item>
+        <item>https://github.com/JoeBlakeB/Battleships/</item>
+        <item>https://joeblakeb.com/projects/battleships/privacy-policy/</item>
+    </string-array>
 </resources>
