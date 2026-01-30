@@ -11,3 +11,5 @@
 .cxx
 local.properties
 /projectFilesBackup
+/app/debug
+/app/release
